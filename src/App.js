@@ -7,7 +7,7 @@ import YoutubeVideoPlayer from './YoutubeVideoPlayer.tsx';
 import Box from '@mui/material/Box';
 import CssBaseline from '@mui/material/CssBaseline';
 import Container from '@mui/material/Container';
-// import Link from '@mui/material/Link';
+import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
@@ -103,15 +103,17 @@ function App(props) {
           </a>
         </Box>
 
-        {/* <Box sx={{
-        flexGrow: 1,
-        justifyContent: "center",
-        display: "flex",
-        mt: 4,
-        mb: 2,
-      }}>
-        <Link href="#">Report issue</Link>
-      </Box> */}
+        <Box sx={{
+          flexGrow: 1,
+          justifyContent: "center",
+          display: "flex",
+          mt: 4,
+          mb: 2,
+        }}>
+          <Typography variant="caption">
+            This site uses&nbsp;<Link href="https://twemoji.twitter.com">Twemoji graphics</Link>&nbsp;licensed under&nbsp;<Link href="https://creativecommons.org/licenses/by/4.0/">CC-BY 4.0</Link>
+          </Typography>
+        </Box>
       </Container>
     </ThemeProvider>
   );
