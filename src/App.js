@@ -8,13 +8,17 @@ import Container from '@mui/material/Container';
 import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { ThemeProvider, createTheme, useTheme } from '@mui/material/styles';
 import { useEffect, useMemo, useRef } from 'react';
+import { grey } from '@mui/material/colors';
 
 function CroppedNoaaImage({ src, alt }) {
   const myCanvas = useRef();
+  const theme = useTheme();
   useEffect(() => {
     const context = myCanvas.current.getContext('2d');
+    context.fillStyle = theme.palette.mode == 'light' ? grey['200'] : grey['900'];
+    context.fillRect(0, 0, 800, 800);
     const image = new Image();
     image.src = src;
     image.alt = alt;
