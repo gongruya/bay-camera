@@ -46,7 +46,7 @@ function App(props) {
 
         <Box sx={{ my: 2 }}>
           <Typography sx={{ my: 1 }} variant="h5" component="h2">
-            Salesforce Tower Cameras by CBS Bay Area
+            Salesforce Tower Cameras by <Link href="https://www.cbsnews.com/sanfrancisco/salesforce-tower-cameras/">CBS Bay Area</Link>
           </Typography>
           <VideoPlayerWrapper>
             <iframe frameborder="0" title="Salesforce 1"
