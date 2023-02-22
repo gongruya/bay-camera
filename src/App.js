@@ -104,14 +104,14 @@ function App(props) {
         </Box>
 
         <Box sx={{
-          flexGrow: 1,
-          justifyContent: "center",
-          display: "flex",
-          mt: 4,
-          mb: 2,
+          textAlign: "center",
+          my: 2,
         }}>
           <Typography variant="caption">
-            This site uses&nbsp;<Link href="https://twemoji.twitter.com">Twemoji graphics</Link>&nbsp;licensed under&nbsp;<Link href="https://creativecommons.org/licenses/by/4.0/">CC-BY 4.0</Link>
+            <Box>&copy; 2023 bay.camera</Box>
+            <Box>
+              This site uses&nbsp;<Link href="https://twemoji.twitter.com">Twemoji graphics</Link>&nbsp;licensed under&nbsp;<Link href="https://creativecommons.org/licenses/by/4.0/">CC-BY 4.0</Link>
+            </Box>
           </Typography>
         </Box>
       </Container>
