@@ -1,5 +1,3 @@
-import * as React from 'react';
-
 import Header from './Header.tsx'
 import VideoPlayerWrapper from './VideoPlayerWrapper.tsx';
 import YoutubeVideoPlayer from './YoutubeVideoPlayer.tsx';
@@ -11,10 +9,29 @@ import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
+import { useEffect, useMemo, useRef } from 'react';
+
+function CroppedNoaaImage({ src, alt }) {
+  const myCanvas = useRef();
+  useEffect(() => {
+    const context = myCanvas.current.getContext('2d');
+    const image = new Image();
+    image.src = src;
+    image.alt = alt;
+    image.onload = () => {
+      context.drawImage(image, 400, 900, 550, 550, 0, 0, 800, 800);
+    }
+  });
+
+  return (
+    <canvas ref={myCanvas} width="800" height="800" style={{ width: '100%' }}>
+    </canvas>
+  );
+}
 
 function App(props) {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
-  const theme = React.useMemo(
+  const theme = useMemo(
     () =>
       createTheme({
         palette: {
@@ -28,9 +45,20 @@ function App(props) {
       <CssBaseline />
       <Container maxWidth="md">
         <Header />
+
         <Box sx={{ my: 2 }}>
           <Typography sx={{ my: 1 }} variant="h5" component="h2">
-            Satellite image
+            Satellite image (NOAA GeoColor)
+          </Typography>
+          <a href="https://www.star.nesdis.noaa.gov/goes/sector_band.php?sat=G18&sector=psw&band=GEOCOLOR&length=24">
+            <CroppedNoaaImage src="https://cdn.star.nesdis.noaa.gov/GOES18/ABI/SECTOR/psw/GEOCOLOR/2400x2400.jpg"
+              alt="NOAA PSW GeoColor"></CroppedNoaaImage>
+          </a>
+        </Box>
+
+        <Box sx={{ my: 2 }}>
+          <Typography sx={{ my: 1 }} variant="h5" component="h2">
+            Satellite image (fog.today)
           </Typography>
           <a href="https://fog.today">
             <img src="https://fog.today/current.jpg" alt="San Francisco fog" style={{ width: '100%' }}></img>
