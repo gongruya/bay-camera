@@ -47,7 +47,7 @@ function App(props) {
         <Header />
 
         <Box sx={{ my: 2 }}>
-          <Typography sx={{ my: 1 }} variant="h5" component="h2">
+          <Typography sx={{ my: 1 }} variant="h6" component="h2">
             Satellite image (NOAA GeoColor)
           </Typography>
           <a href="https://www.star.nesdis.noaa.gov/goes/sector_band.php?sat=G18&sector=psw&band=GEOCOLOR&length=24">
@@ -57,7 +57,7 @@ function App(props) {
         </Box>
 
         <Box sx={{ my: 2 }}>
-          <Typography sx={{ my: 1 }} variant="h5" component="h2">
+          <Typography sx={{ my: 1 }} variant="h6" component="h2">
             Satellite image (fog.today)
           </Typography>
           <a href="https://fog.today">
@@ -66,14 +66,14 @@ function App(props) {
         </Box>
 
         <Box sx={{ my: 2 }}>
-          <Typography sx={{ my: 1 }} variant="h5" component="h2">
+          <Typography sx={{ my: 1 }} variant="h6" component="h2">
             San Francisco Skyline
           </Typography>
           <YoutubeVideoPlayer title="San Francisco Skyline" videoId="K3vjVPiXq5g" ></YoutubeVideoPlayer>
         </Box>
 
         <Box sx={{ my: 2 }}>
-          <Typography sx={{ my: 1 }} variant="h5" component="h2">
+          <Typography sx={{ my: 1 }} variant="h6" component="h2">
             Salesforce Tower Cameras by <Link href="https://www.cbsnews.com/sanfrancisco/salesforce-tower-cameras/">CBS Bay Area</Link>
           </Typography>
           <VideoPlayerWrapper>
@@ -95,7 +95,7 @@ function App(props) {
         </Box>
 
         <Box sx={{ my: 2 }}>
-          <Typography sx={{ my: 1 }} variant="h5" component="h2">
+          <Typography sx={{ my: 1 }} variant="h6" component="h2">
             Golden Gate Bridge from Tiburon
           </Typography>
           <a href="https://www.sheltons.net/wx/station.html">
@@ -104,7 +104,7 @@ function App(props) {
         </Box>
 
         <Box sx={{ my: 2 }}>
-          <Typography sx={{ my: 1 }} variant="h5" component="h2">
+          <Typography sx={{ my: 1 }} variant="h6" component="h2">
             Half Moon Bay
           </Typography>
           <a href="https://www.samschowderhouse.com/about-sams/samcam.html">
@@ -118,7 +118,7 @@ function App(props) {
         </Box>
 
         <Box sx={{ my: 2 }}>
-          <Typography sx={{ my: 1 }} variant="h5" component="h2">
+          <Typography sx={{ my: 1 }} variant="h6" component="h2">
             Ocean Beach
           </Typography>
           <a href="https://www.oceanbeach.org/webcam.html">
