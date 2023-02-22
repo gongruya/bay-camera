@@ -89,6 +89,20 @@ function App(props) {
           </a>
         </Box>
 
+        <Box sx={{ my: 2 }}>
+          <Typography sx={{ my: 1 }} variant="h5" component="h2">
+            Ocean Beach
+          </Typography>
+          <a href="https://www.oceanbeach.org/webcam.html">
+            <img src="https://www.oceanbeach.org/images/sunset.jpg"
+              alt="Ocean Beach" style={{ width: '100%' }}></img>
+          </a>
+          <a href="https://video-monitoring.com/beachcams/oceanbeach/">
+            <img src="https://video-monitoring.com/beachcams/oceanbeach/static/s4latest_.jpg"
+              alt="Ocean Beach" style={{ width: '100%' }}></img>
+          </a>
+        </Box>
+
         {/* <Box sx={{
         flexGrow: 1,
         justifyContent: "center",
