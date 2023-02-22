@@ -1,15 +1,16 @@
 import * as React from 'react';
 
 import Header from './Header.tsx'
+import VideoPlayerWrapper from './VideoPlayerWrapper.tsx';
 import YoutubeVideoPlayer from './YoutubeVideoPlayer.tsx';
-import CssBaseline from '@mui/material/CssBaseline';
+
 import Box from '@mui/material/Box';
+import CssBaseline from '@mui/material/CssBaseline';
 import Container from '@mui/material/Container';
 // import Link from '@mui/material/Link';
 import Typography from '@mui/material/Typography';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import VideoPlayerWrapper from './VideoPlayerWrapper.tsx';
 
 function App(props) {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
