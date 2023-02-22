@@ -66,6 +66,29 @@ function App(props) {
           </VideoPlayerWrapper>
         </Box>
 
+        <Box sx={{ my: 2 }}>
+          <Typography sx={{ my: 1 }} variant="h5" component="h2">
+            Golden Gate Bridge from Tiburon
+          </Typography>
+          <a href="https://www.sheltons.net/wx/station.html">
+            <img src="https://www.sheltons.net/wx/webcam.jpg" alt="Golden Gate Bridge from Tiburon" style={{ width: '100%' }}></img>
+          </a>
+        </Box>
+
+        <Box sx={{ my: 2 }}>
+          <Typography sx={{ my: 1 }} variant="h5" component="h2">
+            Half Moon Bay
+          </Typography>
+          <a href="https://www.samschowderhouse.com/about-sams/samcam.html">
+            <img src="https://samcam1.samschowderhouse.com:20001/axis-cgi/jpg/image.cgi?resolution=640x480&color=1&clock=1&date=1"
+              alt="Half Moon Bay" style={{ width: '100%' }}></img>
+          </a>
+          <a href="https://www.samschowderhouse.com/about-sams/samcam.html">
+            <img src="https://samcam2.samschowderhouse.com:20002/axis-cgi/jpg/image.cgi?resolution=640x480&color=1&clock=1&date=1"
+              alt="Half Moon Bay" style={{ width: '100%' }}></img>
+          </a>
+        </Box>
+
         {/* <Box sx={{
         flexGrow: 1,
         justifyContent: "center",
