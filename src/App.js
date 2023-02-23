@@ -12,23 +12,23 @@ import { ThemeProvider, createTheme, useTheme } from '@mui/material/styles';
 import { useEffect, useMemo, useRef } from 'react';
 import { grey } from '@mui/material/colors';
 
-function CroppedNoaaImage({ src, alt }) {
+function CroppedImage({ src, alt, offsetX, offsetY, cropWidth, cropHeight, width, height, style }) {
   const myCanvas = useRef();
   const theme = useTheme();
   useEffect(() => {
     const context = myCanvas.current.getContext('2d');
     context.fillStyle = theme.palette.mode == 'light' ? grey['200'] : grey['900'];
-    context.fillRect(0, 0, 800, 800);
+    context.fillRect(0, 0, width, height);
     const image = new Image();
     image.src = src;
     image.alt = alt;
     image.onload = () => {
-      context.drawImage(image, 400, 900, 550, 550, 0, 0, 800, 800);
+      context.drawImage(image, offsetX, offsetY, cropWidth, cropHeight, 0, 0, width, height);
     }
   });
 
   return (
-    <canvas ref={myCanvas} width="800" height="800" style={{ width: '100%' }}>
+    <canvas ref={myCanvas} width={width} height={height} style={style}>
     </canvas>
   );
 }
@@ -55,8 +55,10 @@ function App(props) {
             Satellite image (NOAA GeoColor)
           </Typography>
           <a href="https://www.star.nesdis.noaa.gov/goes/sector_band.php?sat=G18&sector=psw&band=GEOCOLOR&length=24">
-            <CroppedNoaaImage src="https://cdn.star.nesdis.noaa.gov/GOES18/ABI/SECTOR/psw/GEOCOLOR/2400x2400.jpg"
-              alt="NOAA PSW GeoColor"></CroppedNoaaImage>
+            <CroppedImage src="https://cdn.star.nesdis.noaa.gov/GOES18/ABI/SECTOR/psw/GEOCOLOR/2400x2400.jpg"
+              alt="NOAA PSW GeoColor"
+              offsetX="400" offsetY="900" cropWidth="550" cropHeight="550"
+              width="800" height="800" style={{ width: '100%' }}></CroppedImage>
           </a>
         </Box>
 
