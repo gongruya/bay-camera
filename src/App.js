@@ -80,6 +80,13 @@ function App(props) {
 
         <Box sx={{ my: 2 }}>
           <Typography sx={{ my: 1 }} variant="h6" component="h2">
+            Golden Gate Bridge (sometimes)
+          </Typography>
+          <YoutubeVideoPlayer title="Golden Gate Bridge" videoId="PgWUHD-JgeU"></YoutubeVideoPlayer>
+        </Box>
+
+        <Box sx={{ my: 2 }}>
+          <Typography sx={{ my: 1 }} variant="h6" component="h2">
             Pacifica
           </Typography>
           <YoutubeVideoPlayer title="Pacifica Mori Point" videoId="EgIZ7abXpUE"></YoutubeVideoPlayer>
