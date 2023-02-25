@@ -82,7 +82,9 @@ function App(props) {
           <Typography sx={{ my: 1 }} variant="h6" component="h2">
             Pacifica
           </Typography>
-          <YoutubeVideoPlayer title="Pacifica" videoId="EgIZ7abXpUE"></YoutubeVideoPlayer>
+          <YoutubeVideoPlayer title="Pacifica Mori Point" videoId="EgIZ7abXpUE"></YoutubeVideoPlayer>
+          <YoutubeVideoPlayer title="Pacifica Beach" videoId="1HuXun1vURc"></YoutubeVideoPlayer>
+          <YoutubeVideoPlayer title="Pacifica Pier" videoId="mLhR80JlLY8"></YoutubeVideoPlayer>
         </Box>
 
         <Box sx={{ my: 2 }}>
