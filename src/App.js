@@ -17,7 +17,7 @@ function CroppedImage({ src, alt, offsetX, offsetY, cropWidth, cropHeight, width
   const theme = useTheme();
   useEffect(() => {
     const context = myCanvas.current.getContext('2d');
-    context.fillStyle = theme.palette.mode == 'light' ? grey['200'] : grey['900'];
+    context.fillStyle = theme.palette.mode === 'light' ? grey['200'] : grey['900'];
     context.fillRect(0, 0, width, height);
     const image = new Image();
     image.src = src;
@@ -75,7 +75,14 @@ function App(props) {
           <Typography sx={{ my: 1 }} variant="h6" component="h2">
             San Francisco Skyline
           </Typography>
-          <YoutubeVideoPlayer title="San Francisco Skyline" videoId="K3vjVPiXq5g" ></YoutubeVideoPlayer>
+          <YoutubeVideoPlayer title="San Francisco Skyline" videoId="K3vjVPiXq5g"></YoutubeVideoPlayer>
+        </Box>
+
+        <Box sx={{ my: 2 }}>
+          <Typography sx={{ my: 1 }} variant="h6" component="h2">
+            Pacifica
+          </Typography>
+          <YoutubeVideoPlayer title="Pacifica" videoId="EgIZ7abXpUE"></YoutubeVideoPlayer>
         </Box>
 
         <Box sx={{ my: 2 }}>
