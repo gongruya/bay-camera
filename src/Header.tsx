@@ -6,7 +6,7 @@ import Typography from '@mui/material/Typography';
 
 export default function Header() {
   return (
-    <Box>
+    <React.Fragment>
       <AppBar position="fixed">
         <Toolbar>
           <Typography variant="h6" component="div">
@@ -15,6 +15,6 @@ export default function Header() {
         </Toolbar>
       </AppBar>
       <Toolbar />
-    </Box>
+    </React.Fragment>
   );
 }

@@ -73,25 +73,11 @@ function App(props) {
 
         <Box sx={{ my: 2 }}>
           <Typography sx={{ my: 1 }} variant="h6" component="h2">
-            San Francisco Skyline
-          </Typography>
-          <YoutubeVideoPlayer title="San Francisco Skyline" videoId="K3vjVPiXq5g"></YoutubeVideoPlayer>
-        </Box>
-
-        <Box sx={{ my: 2 }}>
-          <Typography sx={{ my: 1 }} variant="h6" component="h2">
-            Golden Gate Bridge (sometimes)
-          </Typography>
-          <YoutubeVideoPlayer title="Golden Gate Bridge" videoId="PgWUHD-JgeU"></YoutubeVideoPlayer>
-        </Box>
-
-        <Box sx={{ my: 2 }}>
-          <Typography sx={{ my: 1 }} variant="h6" component="h2">
             Pacifica
           </Typography>
-          <YoutubeVideoPlayer title="Pacifica Mori Point" videoId="EgIZ7abXpUE"></YoutubeVideoPlayer>
-          <YoutubeVideoPlayer title="Pacifica Beach" videoId="1HuXun1vURc"></YoutubeVideoPlayer>
-          <YoutubeVideoPlayer title="Pacifica Pier" videoId="mLhR80JlLY8"></YoutubeVideoPlayer>
+          <YoutubeVideoPlayer title="Pacifica Mori Point" videoId="xf0NCn-1rws"></YoutubeVideoPlayer>
+          <YoutubeVideoPlayer title="Pacifica Beach" videoId="u2RZn6TKrU4"></YoutubeVideoPlayer>
+          <YoutubeVideoPlayer title="Pacifica Pier" videoId="tz1z6pVktw0"></YoutubeVideoPlayer>
         </Box>
 
         <Box sx={{ my: 2 }}>
