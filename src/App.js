@@ -73,6 +73,31 @@ function App(props) {
 
         <Box sx={{ my: 2 }}>
           <Typography sx={{ my: 1 }} variant="h6" component="h2">
+            <a href="https://hdontap.com/index.php/video/stream/sf-skyline-northwest-view-live">
+              Golden Gate Bridge</a>
+          </Typography>
+          <VideoPlayerWrapper>
+            <iframe
+              src="https://portal.hdontap.com/s/embed?stream=San_Franscico-Mark_Hopkins_Bldg-NorthWest_View_ttv-HDOT"
+              title="Golden Gate Bridge">
+            </iframe>
+          </VideoPlayerWrapper>
+        </Box>
+
+        <Box sx={{ my: 2 }}>
+          <Typography sx={{ my: 1 }} variant="h6" component="h2">
+            Golden Gate Bridge 2
+          </Typography>
+          <VideoPlayerWrapper>
+            <iframe
+              src="https://g1.ipcamlive.com/player/player.php?alias=5e863c6e0e66d"
+              title="Golden Gate Bridge">
+            </iframe>
+          </VideoPlayerWrapper>
+        </Box>
+
+        <Box sx={{ my: 2 }}>
+          <Typography sx={{ my: 1 }} variant="h6" component="h2">
             Pacifica
           </Typography>
           <YoutubeVideoPlayer title="Pacifica Mori Point" videoId="xf0NCn-1rws"></YoutubeVideoPlayer>
