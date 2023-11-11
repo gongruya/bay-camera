@@ -12,6 +12,7 @@ export default function VideoPlayerWrapper({ children }) {
         left: 0,
         height: '100%',
         width: '100%',
+        border: 0,
       }
     }}>
       {children}
