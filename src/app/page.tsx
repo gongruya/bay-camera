@@ -141,7 +141,7 @@ export default function Home() {
 
         <Fab color='primary' size='medium' aria-label='feedback'
           sx={{position: 'fixed', right: 24, bottom: 24}}
-          href='https://github.com/gongruya/bay-camera/discussions'
+          href='https://github.com/gongruya/bay-camera/issues'
           target='_blank'
         >
           <FeedbackIcon />
