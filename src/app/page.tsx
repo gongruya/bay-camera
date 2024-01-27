@@ -7,6 +7,7 @@ import {YoutubeVideoPlayer} from '@/components/YoutubeVideoPlayer';
 import {Box, Container, CssBaseline, Fab, Link, ThemeProvider, Typography, createTheme, useMediaQuery} from '@mui/material';
 import {useMemo} from 'react';
 import {Feedback as FeedbackIcon} from '@mui/icons-material';
+import {SpeedInsights} from "@vercel/speed-insights/next"
 
 export default function Home() {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
@@ -146,6 +147,7 @@ export default function Home() {
           <FeedbackIcon />
         </Fab>
       </Container>
+      <SpeedInsights />
     </ThemeProvider>
   );
 }
