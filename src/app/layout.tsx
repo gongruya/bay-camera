@@ -21,7 +21,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <AppRouterCacheProvider>{children}</AppRouterCacheProvider>
       </body>
-      <GoogleTagManager gtmId='GTM-XYZ' />
+      <GoogleTagManager gtmId='GTM-QF4Z451TJF' />
       <GoogleAnalytics gaId='G-QF4Z451TJF' />
     </html>
   );
