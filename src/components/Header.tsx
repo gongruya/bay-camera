@@ -3,7 +3,7 @@ import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 
-export default function Header() {
+export function Header() {
   return (
     <React.Fragment>
       <AppBar position="fixed">
@@ -16,4 +16,4 @@ export default function Header() {
       <Toolbar />
     </React.Fragment>
   );
-}
+};
