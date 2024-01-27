@@ -3,9 +3,6 @@ import {Inter} from 'next/font/google';
 import './globals.css';
 import {AppRouterCacheProvider} from '@mui/material-nextjs/v13-appRouter';
 import {GoogleAnalytics, GoogleTagManager} from '@next/third-parties/google';
-import {Header} from '@/components/Header';
-import {Container} from '@mui/material';
-import {SpeedInsights} from '@vercel/speed-insights/next';
 
 const inter = Inter({subsets: ['latin']});
 
@@ -22,13 +19,7 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <body className={inter.className}>
-        <AppRouterCacheProvider>
-          <Header />
-          <Container maxWidth='md'>
-            {children}
-          </Container>
-          <SpeedInsights />
-        </AppRouterCacheProvider>
+        <AppRouterCacheProvider>{children}</AppRouterCacheProvider>
       </body>
       <GoogleTagManager gtmId='GTM-QF4Z451TJF' />
       <GoogleAnalytics gaId='G-QF4Z451TJF' />

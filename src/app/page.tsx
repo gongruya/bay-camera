@@ -3,21 +3,10 @@
 import {CroppedImage} from '@/components/CroppedImage';
 import {VideoPlayerWrapper} from '@/components/VideoPlayerWrapper';
 import {YoutubeVideoPlayer} from '@/components/YoutubeVideoPlayer';
-import {Box, Container, CssBaseline, Fab, Link, ThemeProvider, Typography, createTheme, useMediaQuery} from '@mui/material';
-import {useMemo} from 'react';
+import {Box, Fab, Link, Typography} from '@mui/material';
 import {Feedback as FeedbackIcon} from '@mui/icons-material';
 
 export default function Home() {
-  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
-  const theme = useMemo(
-    () =>
-      createTheme({
-        palette: {
-          mode: prefersDarkMode ? 'dark' : 'light',
-        },
-      }),
-    [prefersDarkMode],
-  );
   return (
     <>
       <Box sx={{my: 2}}>
