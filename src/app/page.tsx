@@ -4,8 +4,9 @@ import {CroppedImage} from '@/components/CroppedImage';
 import {Header} from '@/components/Header'
 import {VideoPlayerWrapper} from '@/components/VideoPlayerWrapper';
 import {YoutubeVideoPlayer} from '@/components/YoutubeVideoPlayer';
-import {Box, Container, CssBaseline, Link, ThemeProvider, Typography, createTheme, useMediaQuery} from '@mui/material';
+import {Box, Container, CssBaseline, Fab, Link, ThemeProvider, Typography, createTheme, useMediaQuery} from '@mui/material';
 import {useMemo} from 'react';
+import {Feedback as FeedbackIcon} from '@mui/icons-material';
 
 export default function Home() {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
@@ -136,6 +137,14 @@ export default function Home() {
             </Box>
           </Typography>
         </Box>
+
+        <Fab color='primary' size='medium' aria-label='feedback'
+          sx={{position: 'fixed', right: 24, bottom: 24}}
+          href='https://github.com/gongruya/bay-camera/discussions'
+          target='_blank'
+        >
+          <FeedbackIcon />
+        </Fab>
       </Container>
     </ThemeProvider>
   );
