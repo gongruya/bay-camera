@@ -22,8 +22,8 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <body className={inter.className}>
+        <Header />
         <Container maxWidth='md'>
-          <Header />
           <AppRouterCacheProvider>{children}</AppRouterCacheProvider>
         </Container>
         <SpeedInsights />
