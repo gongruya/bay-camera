@@ -2,9 +2,12 @@ import type {Metadata} from 'next';
 import {Inter} from 'next/font/google';
 import './globals.css';
 import {AppRouterCacheProvider} from '@mui/material-nextjs/v13-appRouter';
-import { GoogleAnalytics, GoogleTagManager } from '@next/third-parties/google'
+import {GoogleAnalytics, GoogleTagManager} from '@next/third-parties/google';
+import {Header} from '@/components/Header';
+import {Container} from '@mui/material';
+import {SpeedInsights} from '@vercel/speed-insights/next';
 
-const inter = Inter({subsets: ["latin"]});
+const inter = Inter({subsets: ['latin']});
 
 export const metadata: Metadata = {
   title: 'bay.camera - San Francisco Bay Area Photography Webcams',
@@ -17,12 +20,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang='en'>
       <body className={inter.className}>
-        <AppRouterCacheProvider>{children}</AppRouterCacheProvider>
+        <Container maxWidth='md'>
+          <Header />
+          <AppRouterCacheProvider>{children}</AppRouterCacheProvider>
+        </Container>
+        <SpeedInsights />
       </body>
       <GoogleTagManager gtmId='GTM-QF4Z451TJF' />
       <GoogleAnalytics gaId='G-QF4Z451TJF' />
     </html>
   );
-}
+};
