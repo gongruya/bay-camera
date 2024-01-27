@@ -22,11 +22,13 @@ export default function RootLayout({
   return (
     <html lang='en'>
       <body className={inter.className}>
-        <Header />
-        <Container maxWidth='md'>
-          <AppRouterCacheProvider>{children}</AppRouterCacheProvider>
-        </Container>
-        <SpeedInsights />
+        <AppRouterCacheProvider>
+          <Header />
+          <Container maxWidth='md'>
+            {children}
+          </Container>
+          <SpeedInsights />
+        </AppRouterCacheProvider>
       </body>
       <GoogleTagManager gtmId='GTM-QF4Z451TJF' />
       <GoogleAnalytics gaId='G-QF4Z451TJF' />
