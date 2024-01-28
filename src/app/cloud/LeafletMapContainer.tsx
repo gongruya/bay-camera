@@ -29,7 +29,7 @@ async function renderLowCloud(map: L.Map, heatmapLayer: any) {
   heatmapLayer.setData({
     max: 100,
     data: [{lat: 37.774546, lng: -122.433523, val: 100}],
-  })
+  });
 }
 
 function FlyMapTo(props: {center: LatLngExpression}) {
