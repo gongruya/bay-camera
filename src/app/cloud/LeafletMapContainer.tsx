@@ -2,7 +2,7 @@ import 'leaflet/dist/leaflet.css';
 import React, {useEffect, CSSProperties, useState} from 'react';
 import {MapContainer, TileLayer, useMap, useMapEvent} from 'react-leaflet';
 import L, {LatLngExpression} from 'leaflet';
-import {fetchHrrr} from '@/weather/hrrr';
+import {CloudCoverage} from '@/weather/hrrr';
 
 // leaflet-heatmap has no typescript declaration.
 const HeatmapOverlay = require('leaflet-heatmap');
@@ -20,18 +20,6 @@ const HEAT_MAP_GRADIENT = {
   1: '#505050',
 }
 
-async function renderLowCloud(map: L.Map, heatmapLayer: any) {
-  // const data = await fetchHrrr(map.getBounds());
-  // heatmapLayer.setData({
-  //   max: 100,
-  //   data: data.lowCloud || [],
-  // });
-  heatmapLayer.setData({
-    max: 100,
-    data: [{lat: 37.774546, lng: -122.433523, val: 100}],
-  });
-}
-
 function FlyMapTo(props: {center: LatLngExpression}) {
   const map = useMap();
 
@@ -42,22 +30,37 @@ function FlyMapTo(props: {center: LatLngExpression}) {
   return null;
 }
 
-const CloudHeatMap = (props: {heatLayer: any}) => {
+function CloudHeatMap(props: {heatLayer: any, cloudMap: CloudCoverage[], onChange: (bounds: L.LatLngBounds) => void}) {
   const map = useMap();
   if (!map.hasLayer(props.heatLayer)) {
     props.heatLayer.addTo(map);
   }
 
-  renderLowCloud(map, props.heatLayer);
+  useEffect(() => {
+    props.onChange(map.getBounds());
+  }, []);
+
+  useEffect(() => {
+    props.heatLayer.setData({
+      max: 100,
+      data: props.cloudMap,
+    });
+  }, [props.cloudMap]);
 
   useMapEvent('moveend', () => {
-    renderLowCloud(map, props.heatLayer);
+    props.onChange(map.getBounds());
   });
 
   return null;
 }
 
-export default function LeafletMapContainer({style}: {style: CSSProperties}) {
+interface LeafletMapContainerProps {
+  style: CSSProperties;
+  cloudMap: CloudCoverage[];
+  onChange: (bounds: L.LatLngBounds) => void;
+}
+
+export default function LeafletMapContainer({style, cloudMap, onChange}: LeafletMapContainerProps) {
   // Center of the map defaulted to San Francisco.
   const [center, setCenter] =
     useState<LatLngExpression>([37.774546, -122.433523]);
@@ -104,7 +107,7 @@ export default function LeafletMapContainer({style}: {style: CSSProperties}) {
         minZoom={6}
       />
       {/* <FlyMapTo center={center} /> */}
-      <CloudHeatMap heatLayer={heatLayer} />
+      <CloudHeatMap heatLayer={heatLayer} cloudMap={cloudMap} onChange={onChange} />
     </MapContainer>
   );
 };
