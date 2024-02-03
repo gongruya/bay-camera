@@ -37,7 +37,6 @@ export async function GET(request: NextRequest) {
     return NextResponse.json({error: 'Invalid boundry'}, {status: 400});
   }
 
-  // TODO: Update with the actual backend server.
   const response =
     await fetch(`${process.env.HRRR_BACKEND_ADDRESS}/?` + new URLSearchParams({
       'level': level,
