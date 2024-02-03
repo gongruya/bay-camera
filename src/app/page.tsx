@@ -36,15 +36,6 @@ export default function Home() {
 
         <Box sx={{my: 2}}>
           <Typography sx={{my: 1}} variant='h6' component='h2'>
-            Satellite image (fog.today)
-          </Typography>
-          <a href='https://fog.today'>
-            <img src='https://fog.today/current.jpg' alt='San Francisco fog' style={{width: '100%'}}></img>
-          </a>
-        </Box>
-
-        <Box sx={{my: 2}}>
-          <Typography sx={{my: 1}} variant='h6' component='h2'>
             Golden Gate Bridge
           </Typography>
           <VideoPlayerWrapper>
