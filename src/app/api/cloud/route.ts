@@ -39,7 +39,7 @@ export async function GET(request: NextRequest) {
 
   // TODO: Update with the actual backend server.
   const response =
-    await fetch('https://hrrr-api.bay.camera/?' + new URLSearchParams({
+    await fetch(`${process.env.HRRR_BACKEND_ADDRESS}/?` + new URLSearchParams({
       'level': level,
       'date': dateIso,
       'fcst': forecastHours.toString(),
