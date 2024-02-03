@@ -20,7 +20,7 @@ export default function Home() {
   const [cloudMap, setCloudMap] = useState<CloudCoverage[]>([]);
 
   useEffect(() => {
-    const date = new Date();
+    const date = hoursAfter(new Date(), -1);
     date.setUTCMinutes(0);
     date.setUTCSeconds(0);
     date.setUTCMilliseconds(0);
