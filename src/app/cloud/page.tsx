@@ -5,7 +5,9 @@ import {Box, Button, Drawer, FormControl, IconButton, InputLabel, MenuItem, Sele
 import dynamic from 'next/dynamic';
 import {useEffect, useState} from 'react';
 import {LatLngBounds} from 'leaflet';
+import CloseIcon from '@mui/icons-material/Close';
 import MenuIcon from '@mui/icons-material/Menu';
+
 const LeafletMapContainer =
   dynamic(() => import('@/app/cloud/LeafletMapContainer'), {ssr: false});
 
@@ -60,7 +62,7 @@ export default function Home() {
     />
     <Box sx={{
       position: 'absolute',
-      top: 32, right: 48,
+      top: 32, right: 32,
     }}>
       <Button color='primary' variant='contained' onClick={() => {
         setDrawerOpen(true);
@@ -72,7 +74,12 @@ export default function Home() {
         onClose={() => {
           setDrawerOpen(false);
         }}>
-        <Box sx={{px: 4, py: 2}}>
+        <Box sx={{p: 2}}>
+          <IconButton onClick={() => {
+            setDrawerOpen(false);
+          }}>
+            <CloseIcon />
+          </IconButton>
           <FormControl fullWidth sx={{my: 2}}>
             <InputLabel>Cloud Level</InputLabel>
             <Select value={cloudLevel}
