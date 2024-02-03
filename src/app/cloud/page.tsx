@@ -1,10 +1,11 @@
 'use client'
 
-import {CloudCoverage, fetchHrrrCloud, hrrrRange} from '@/weather/hrrr';
-import {Box, FormControl, InputLabel, MenuItem, Select, Slider} from '@mui/material';
+import {CloudCoverage, CloudLevel, fetchHrrrCloud, hrrrRange} from '@/weather/hrrr';
+import {Box, Button, Drawer, FormControl, IconButton, InputLabel, MenuItem, Select, Slider} from '@mui/material';
 import dynamic from 'next/dynamic';
 import {useEffect, useState} from 'react';
 import {LatLngBounds} from 'leaflet';
+import MenuIcon from '@mui/icons-material/Menu';
 const LeafletMapContainer =
   dynamic(() => import('@/app/cloud/LeafletMapContainer'), {ssr: false});
 
@@ -15,9 +16,11 @@ function hoursAfter(date: Date, hours: number): Date {
 export default function Home() {
   const [currentDate, setCurrentDate] = useState<Date>();
   const [modelDate, setModelDate] = useState<Date>();
-  const [bounds, setBounds] = useState<LatLngBounds>();
   const [forecastHours, setForecastHours] = useState(0);
+  const [bounds, setBounds] = useState<LatLngBounds>();
+  const [cloudLevel, setCloudLevel] = useState<CloudLevel>('high');
   const [cloudMap, setCloudMap] = useState<CloudCoverage[]>([]);
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   useEffect(() => {
     const date = hoursAfter(new Date(), -1);
@@ -30,12 +33,14 @@ export default function Home() {
 
   useEffect(() => {
     if (modelDate && bounds) {
-      fetchHrrrCloud(modelDate, forecastHours, 'low', bounds)
-        .then(({lowCloud}) => {
-          setCloudMap(lowCloud || []);
+      fetchHrrrCloud(modelDate, forecastHours, cloudLevel, bounds)
+        .then(({cloud}) => {
+          setCloudMap(cloud || []);
+        }).catch(() => {
+          console.warn('Cloud forecast is not available at this time yet');
         });
     }
-  }, [modelDate, forecastHours]);
+  }, [modelDate, forecastHours, cloudLevel]);
 
   return (modelDate && currentDate && <>
     <LeafletMapContainer style={{
@@ -44,34 +49,60 @@ export default function Home() {
       right: 0,
       bottom: 0,
       left: 0,
+      zIndex: -1,
     }}
       cloudMap={cloudMap}
       onChange={async (bounds) => {
         setBounds(bounds);
         setCloudMap((await fetchHrrrCloud(
-          modelDate, forecastHours, 'low', bounds)).lowCloud || []);
+          modelDate, forecastHours, cloudLevel, bounds)).cloud || []);
       }}
     />
     <Box sx={{
-      zIndex: 9999, position: 'absolute',
-      top: 48, right: 48
+      position: 'absolute',
+      top: 32, right: 48,
     }}>
-      <FormControl>
-        <InputLabel>Model Time</InputLabel>
-        <Select variant="filled" value={modelDate.toISOString()}
-          label='Model Time'
-          onChange={({target: {value}}) => {
-            setModelDate(new Date(value));
-          }}>
-          {[...(new Array(24)).keys()]
-            .map((h) => hoursAfter(currentDate, -h))
-            .map((d, i) =>
-              <MenuItem value={d.toISOString()} key={i}>
-                {d.toLocaleString()}
-              </MenuItem>
-            )}
-        </Select>
-      </FormControl>
+      <Button color='primary' variant='contained' onClick={() => {
+        setDrawerOpen(true);
+      }}>
+        <MenuIcon />
+      </Button>
+      <Drawer
+        anchor='right' open={drawerOpen}
+        onClose={() => {
+          setDrawerOpen(false);
+        }}>
+        <Box sx={{px: 4, py: 2}}>
+          <FormControl fullWidth sx={{my: 2}}>
+            <InputLabel>Cloud Level</InputLabel>
+            <Select value={cloudLevel}
+              label='Model Time'
+              onChange={({target: {value}}) => {
+                setCloudLevel(value as CloudLevel);
+              }}>
+              <MenuItem value='high'>High Cloud</MenuItem>
+              <MenuItem value='mid'>Mid Cloud</MenuItem>
+              <MenuItem value='low'>Low Cloud</MenuItem>
+            </Select>
+          </FormControl>
+          <FormControl fullWidth sx={{my: 2}}>
+            <InputLabel>Model Time</InputLabel>
+            <Select value={modelDate.toISOString()}
+              label='Model Time'
+              onChange={({target: {value}}) => {
+                setModelDate(new Date(value));
+              }}>
+              {[...(new Array(24)).keys()]
+                .map((h) => hoursAfter(currentDate, -h))
+                .map((d, i) =>
+                  <MenuItem value={d.toISOString()} key={i}>
+                    {d.toLocaleString()}
+                  </MenuItem>
+                )}
+            </Select>
+          </FormControl>
+        </Box>
+      </Drawer>
     </Box>
     <Box sx={{
       zIndex: 999, position: 'absolute',

@@ -23,9 +23,7 @@ export interface CloudCoverage {
 }
 
 export interface HrrrResponse {
-  lowCloud?: CloudCoverage[];
-  midCloud?: CloudCoverage[];
-  highCloud?: CloudCoverage[];
+  cloud?: CloudCoverage[];
 }
 
 export type CloudLevel = 'low' | 'mid' | 'high';
@@ -37,7 +35,7 @@ export async function fetchHrrrCloud(
   const ne = bounds.getNorthEast();
   const response =
     await fetch('/api/cloud?' + new URLSearchParams({
-      'level': 'low',
+      'level': level,
       'fcst': forecastHours.toString(),
       'date': date.toISOString(),
       'sw': `${sw.lat},${sw.lng}`,
