@@ -8,7 +8,10 @@ import {SpeedInsights} from '@vercel/speed-insights/next';
 const inter = Inter({subsets: ['latin']});
 
 export const metadata: Metadata = {
-  title: 'bay.camera - San Francisco Bay Area Photography Webcams',
+  title: {
+    template: '%s | bay.camera',
+    default: 'bay.camera - San Francisco Bay Area Photography Webcams',
+  },
   description: 'bay.camera is a collection of San Francisco Bay Area webcams and other useful photography resources.',
 };
 
