@@ -80,7 +80,7 @@ export function CloudPageWrapper() {
                 setCloudLevel(value as CloudLevel);
               }}>
               <MenuItem value='high'>High Cloud</MenuItem>
-              <MenuItem value='mid'>Mid Cloud</MenuItem>
+              <MenuItem value='mid'>Medium Cloud</MenuItem>
               <MenuItem value='low'>Low Cloud</MenuItem>
             </Select>
           </FormControl>
@@ -95,7 +95,8 @@ export function CloudPageWrapper() {
                 .map((h) => moment(currentDate).subtract(h, 'hour'))
                 .map((m, i) =>
                   <MenuItem value={m.toISOString()} key={i}>
-                    {m.toLocaleString()}
+                    {m.format('YYYY-MM-DD hh:mm a')} ({
+                      hrrrRange(m.toDate())} hour forecast)
                   </MenuItem>
                 )}
             </Select>
