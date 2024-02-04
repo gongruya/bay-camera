@@ -8,16 +8,16 @@ import {CloudCoverage} from '@/weather/hrrr';
 const HeatmapOverlay = require('leaflet-heatmap');
 
 const HEAT_MAP_GRADIENT = {
-  .1: '#24a0f2',
-  .2: '#4eb0f2',
-  .3: '#80b7f8',
-  .4: '#a0c8ff',
-  .5: '#d2e1ff',
-  .6: '#e1e1e1',
-  .7: '#c9c9c9',
-  .8: '#a5a5a5',
-  .9: '#6e6e6e',
-  1: '#505050',
+  '.1': '#222',
+  '.2': '#444',
+  '.3': '#666',
+  '.4': '#888',
+  '.5': '#999',
+  '.6': '#bbb',
+  '.7': '#ccc',
+  '.8': '#ddd',
+  '.9': '#eee',
+  '1': '#fff',
 }
 
 function FlyMapTo(props: {center: LatLngExpression}) {
@@ -71,19 +71,7 @@ export default function LeafletMapContainer({style, cloudMap, onChange}: Leaflet
       maxOpacity: .85,
       scaleRadius: true,
       useLocalExtrema: false,
-      gradient: {
-        '.1': '#24a0f2',
-        '.2': '#4eb0f2',
-        '.3': '#80b7f8',
-        '.4': '#a0c8ff',
-        '.5': '#d2e1ff',
-        '.6': '#e1e1e1',
-        '.7': '#c9c9c9',
-        '.8': '#a5a5a5',
-        '.9': '#6e6e6e',
-        '1': '#505050',
-      },
-
+      gradient: HEAT_MAP_GRADIENT,
       latField: 'lat',
       lngField: 'lng',
       valueField: 'val',
