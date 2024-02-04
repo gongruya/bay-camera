@@ -147,6 +147,11 @@ export function CloudPageWrapper() {
                 )}
             </Select>
           </FormControl>
+          <Box sx={{my: 2, textAlign:'center'}}>
+            <Button variant='contained' onClick={() => {setDrawerOpen(false);}}>
+              Done
+            </Button>
+          </Box>
         </Box>
       </Drawer>
     </Box>
