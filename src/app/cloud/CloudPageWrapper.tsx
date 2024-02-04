@@ -1,5 +1,6 @@
 'use client'
 
+import moment from 'moment';
 import {CloudCoverage, CloudLevel, fetchHrrrCloud, hrrrRange} from '@/weather/hrrr';
 import {Box, Button, Drawer, FormControl, IconButton, InputLabel, MenuItem, Select, Slider} from '@mui/material';
 import dynamic from 'next/dynamic';
@@ -11,10 +12,6 @@ import MenuIcon from '@mui/icons-material/Menu';
 const LeafletMapContainer =
   dynamic(() => import('@/app/cloud/LeafletMapContainer'), {ssr: false});
 
-function hoursAfter(date: Date, hours: number): Date {
-  return new Date(date.getTime() + hours * 3600 * 1000);
-}
-
 export function CloudPageWrapper() {
   const [currentDate, setCurrentDate] = useState<Date>();
   const [modelDate, setModelDate] = useState<Date>();
@@ -25,10 +22,7 @@ export function CloudPageWrapper() {
   const [drawerOpen, setDrawerOpen] = useState(false);
 
   useEffect(() => {
-    const date = hoursAfter(new Date(), -1);
-    date.setUTCMinutes(0);
-    date.setUTCSeconds(0);
-    date.setUTCMilliseconds(0);
+    const date = moment().subtract(1, 'hour').startOf('hour').toDate();
     setModelDate(date);
     setCurrentDate(date);
   }, []);
@@ -98,10 +92,10 @@ export function CloudPageWrapper() {
                 setModelDate(new Date(value));
               }}>
               {[...(new Array(24)).keys()]
-                .map((h) => hoursAfter(currentDate, -h))
-                .map((d, i) =>
-                  <MenuItem value={d.toISOString()} key={i}>
-                    {d.toLocaleString()}
+                .map((h) => moment(currentDate).subtract(h, 'hour'))
+                .map((m, i) =>
+                  <MenuItem value={m.toISOString()} key={i}>
+                    {m.toLocaleString()}
                   </MenuItem>
                 )}
             </Select>
@@ -118,10 +112,10 @@ export function CloudPageWrapper() {
         defaultValue={forecastHours}
         valueLabelFormat={
           (h) => {
-            const d = hoursAfter(modelDate, h);
+            const m = moment(modelDate).add(h, 'hour');
             return <Box sx={{textAlign: 'center'}}>
-              <Box>{d.toLocaleDateString()}</Box>
-              <Box>{d.toLocaleTimeString()}</Box>
+              <Box>{m.format('MMM Do')}</Box>
+              <Box>{m.format('h a')}</Box>
             </Box>;
           }}
         valueLabelDisplay='on'
