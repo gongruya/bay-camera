@@ -2,7 +2,7 @@
 
 import moment from 'moment';
 import {CloudCoverage, CloudLevel, fetchHrrrCloud, hrrrRange} from '@/weather/hrrr';
-import {Box, Button, Drawer, FormControl, IconButton, InputLabel, MenuItem, Select, Slider} from '@mui/material';
+import {Box, Button, Drawer, FormControl, IconButton, InputLabel, MenuItem, Select, Slider, Snackbar} from '@mui/material';
 import dynamic from 'next/dynamic';
 import {useEffect, useState} from 'react';
 import {LatLngBounds} from 'leaflet';
@@ -20,6 +20,7 @@ export function CloudPageWrapper() {
   const [cloudLevel, setCloudLevel] = useState<CloudLevel>('high');
   const [cloudMap, setCloudMap] = useState<CloudCoverage[]>([]);
   const [drawerOpen, setDrawerOpen] = useState(false);
+  const [errorOpen, setErrorOpen] = useState(false);
 
   useEffect(() => {
     const date = moment().subtract(1, 'hour').startOf('hour').toDate();
@@ -33,7 +34,7 @@ export function CloudPageWrapper() {
         .then(({cloud}) => {
           setCloudMap(cloud || []);
         }).catch(() => {
-          console.warn('Cloud forecast is not available at this time yet');
+          setErrorOpen(true);
         });
     }
   }, [modelDate, forecastHours, cloudLevel]);
@@ -50,8 +51,13 @@ export function CloudPageWrapper() {
       cloudMap={cloudMap}
       onChange={async (bounds) => {
         setBounds(bounds);
-        setCloudMap((await fetchHrrrCloud(
-          modelDate, forecastHours, cloudLevel, bounds)).cloud || []);
+        try {
+          const {cloud} =
+            await fetchHrrrCloud(modelDate, forecastHours, cloudLevel, bounds);
+          setCloudMap(cloud || []);
+        } catch {
+          setErrorOpen(true);
+        }
       }}
     />
     <Box sx={{position: 'absolute', top: 16, right: 16}}>
@@ -129,6 +135,9 @@ export function CloudPageWrapper() {
         }}
       />
     </Box>
+    <Snackbar open={errorOpen} autoHideDuration={2000}
+      onClose={() => {setErrorOpen(false);}}
+      message='Forecast unavailable at the selected time yet' />
   </>
   )
 };
