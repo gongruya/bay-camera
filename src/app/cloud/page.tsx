@@ -60,13 +60,11 @@ export default function Home() {
           modelDate, forecastHours, cloudLevel, bounds)).cloud || []);
       }}
     />
-    <Box sx={{
-      position: 'absolute',
-      top: 32, right: 32,
-    }}>
-      <Button color='primary' variant='contained' onClick={() => {
-        setDrawerOpen(true);
-      }}>
+    <Box sx={{position: 'absolute', top: 16, right: 16}}>
+      <Button color='primary' variant='contained'
+        onClick={() => {
+          setDrawerOpen(true);
+        }}>
         <MenuIcon />
       </Button>
       <Drawer
