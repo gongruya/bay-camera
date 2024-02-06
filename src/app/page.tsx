@@ -120,9 +120,6 @@ export default function Home() {
         }}>
           <Typography variant='caption'>
             <Box>&copy; 2024 bay.camera</Box>
-            <Box>
-              This site uses&nbsp;<Link href='https://twemoji.twitter.com'>Twemoji graphics</Link>&nbsp;licensed under&nbsp;<Link href='https://creativecommons.org/licenses/by/4.0/'>CC-BY 4.0</Link>
-            </Box>
           </Typography>
         </Box>
 
