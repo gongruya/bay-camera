@@ -1,4 +1,5 @@
 # bay.camera
+![deployment](https://vercelbadge.vercel.app/api/gongruya/bay-camera)
 
 ![logo](https://github.com/gongruya/bay-camera/blob/main/public/images/logo.png?raw=true)
 
