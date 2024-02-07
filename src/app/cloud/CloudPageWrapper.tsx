@@ -2,18 +2,27 @@
 
 import moment from 'moment';
 import {CloudCoverage, CloudLevel, fetchHrrrCloud, hrrrRange} from '@/weather/hrrr';
-import {Box, Button, CircularProgress, Drawer, FormControl, IconButton, InputLabel, MenuItem, Select, Slider, Snackbar, Typography} from '@mui/material';
+import {Box, Button, CircularProgress, Drawer, FormControl, IconButton, InputLabel, MenuItem, Select, Slider, Snackbar, Typography, styled} from '@mui/material';
 import dynamic from 'next/dynamic';
 import {useEffect, useState} from 'react';
-import {LatLngBounds} from 'leaflet';
+import {LatLngBounds, LatLngExpression, LatLngTuple} from 'leaflet';
 import CloseIcon from '@mui/icons-material/Close';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import CloudDoneIcon from '@mui/icons-material/CloudDone';
 import CloudOffIcon from '@mui/icons-material/CloudOff';
 import MenuIcon from '@mui/icons-material/Menu';
+import MyLocationIcon from '@mui/icons-material/MyLocation';
 
 const LeafletMapContainer =
   dynamic(() => import('@/app/cloud/LeafletMapContainer'), {ssr: false});
+
+const SolidIconButton = styled(IconButton)(({theme}) => ({
+  color: theme.palette.primary.main,
+  backgroundColor: theme.palette.background.default,
+  '&:hover': {
+    backgroundColor: theme.palette.background.default,
+  },
+}));
 
 export function CloudPageWrapper() {
   const [currentDate, setCurrentDate] = useState<Date>();
@@ -27,10 +36,21 @@ export function CloudPageWrapper() {
   const [errorFound, setErrorFound] = useState(false);
   const [loading, setLoading] = useState(0);
 
+  // Center of the map defaulted to San Francisco.
+  const [center, setCenter] =
+    useState<LatLngExpression>([37.774546, -122.433523]);
+  const [gpsCenter, setGpsCenter] = useState<LatLngTuple>();
+
   useEffect(() => {
     const date = moment().subtract(1, 'hour').startOf('hour').toDate();
     setModelDate(date);
     setCurrentDate(date);
+
+    // Preload the GPS location.
+    window.navigator.geolocation.getCurrentPosition(
+      ({coords: {latitude, longitude}}) => {
+        setGpsCenter([latitude, longitude]);
+      })
   }, []);
 
   useEffect(() => {
@@ -84,6 +104,7 @@ export function CloudPageWrapper() {
       zIndex: -1,
     }}
       cloudMap={cloudMap}
+      center={center}
       onChange={async (bounds) => {
         setBounds(bounds);
         try {
@@ -100,13 +121,22 @@ export function CloudPageWrapper() {
         }
       }}
     />
-    <Box sx={{position: 'absolute', top: 16, right: 16}}>
-      <Button color='primary' variant='contained'
-        onClick={() => {
+    <Box position='absolute' sx={{right: 16}}>
+      <Box my={2}>
+        <SolidIconButton onClick={() => {
           setDrawerOpen(true);
         }}>
-        <MenuIcon />
-      </Button>
+          <MenuIcon />
+        </SolidIconButton>
+      </Box>
+      <Box my={2}>
+        <SolidIconButton disabled={!gpsCenter} onClick={() => {
+          // Make a copy so it can be used multiple times.
+          setCenter([...gpsCenter!]);
+        }}>
+          <MyLocationIcon />
+        </SolidIconButton>
+      </Box>
       <Drawer
         anchor='right' open={drawerOpen}
         onClose={() => {
@@ -147,7 +177,7 @@ export function CloudPageWrapper() {
                 )}
             </Select>
           </FormControl>
-          <Box sx={{my: 2, textAlign:'center'}}>
+          <Box sx={{my: 2, textAlign: 'center'}}>
             <Button variant='outlined' onClick={() => {setDrawerOpen(false);}}>
               Done
             </Button>

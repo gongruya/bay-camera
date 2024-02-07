@@ -25,12 +25,18 @@ function FlyMapTo(props: {center: LatLngExpression}) {
 
   useEffect(() => {
     map.setView(props.center);
-  });
+  }, [props.center]);
 
   return null;
 }
 
-function CloudHeatMap(props: {heatLayer: any, cloudMap: CloudCoverage[], onChange: (bounds: L.LatLngBounds) => void}) {
+interface CloudHeatMapProps {
+  heatLayer: any;
+  cloudMap: CloudCoverage[];
+  onChange: (bounds: L.LatLngBounds) => void;
+}
+
+function CloudHeatMap(props: CloudHeatMapProps) {
   const map = useMap();
   if (!map.hasLayer(props.heatLayer)) {
     props.heatLayer.addTo(map);
@@ -56,15 +62,12 @@ function CloudHeatMap(props: {heatLayer: any, cloudMap: CloudCoverage[], onChang
 
 interface LeafletMapContainerProps {
   style: CSSProperties;
+  center: LatLngExpression;
   cloudMap: CloudCoverage[];
   onChange: (bounds: L.LatLngBounds) => void;
 }
 
-export default function LeafletMapContainer({style, cloudMap, onChange}: LeafletMapContainerProps) {
-  // Center of the map defaulted to San Francisco.
-  const [center, setCenter] =
-    useState<LatLngExpression>([37.774546, -122.433523]);
-
+export default function LeafletMapContainer({style, center, cloudMap, onChange}: LeafletMapContainerProps) {
   const [heatLayer, setHeatLayer] = useState(
     new HeatmapOverlay({
       radius: 0.25,
@@ -77,13 +80,6 @@ export default function LeafletMapContainer({style, cloudMap, onChange}: Leaflet
       valueField: 'val',
     }));
 
-  useEffect(() => {
-    window.navigator.geolocation.getCurrentPosition(
-      ({coords: {latitude, longitude}}) => {
-        setCenter([latitude, longitude]);
-      });
-  }, []);
-
   return (
     <MapContainer center={center} zoom={8} style={style}
       zoomDelta={1} zoomSnap={1} maxBounds={[[18, -135], [55, -60]]}
@@ -94,7 +90,7 @@ export default function LeafletMapContainer({style, cloudMap, onChange}: Leaflet
         maxZoom={10}
         minZoom={5}
       />
-      {/* <FlyMapTo center={center} /> */}
+      <FlyMapTo center={center} />
       <CloudHeatMap heatLayer={heatLayer} cloudMap={cloudMap} onChange={onChange} />
     </MapContainer>
   );
