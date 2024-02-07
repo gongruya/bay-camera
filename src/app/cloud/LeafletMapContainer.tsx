@@ -92,7 +92,7 @@ export default function LeafletMapContainer({style, cloudMap, onChange}: Leaflet
         url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         maxZoom={10}
-        minZoom={6}
+        minZoom={5}
       />
       {/* <FlyMapTo center={center} /> */}
       <CloudHeatMap heatLayer={heatLayer} cloudMap={cloudMap} onChange={onChange} />
