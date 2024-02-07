@@ -2,7 +2,7 @@ import type {Metadata} from 'next';
 import {Inter} from 'next/font/google';
 import './globals.css';
 import {AppRouterCacheProvider} from '@mui/material-nextjs/v13-appRouter';
-import {GoogleAnalytics, GoogleTagManager} from '@next/third-parties/google';
+import {GoogleAnalytics} from '@next/third-parties/google';
 import {SpeedInsights} from '@vercel/speed-insights/next';
 
 const inter = Inter({subsets: ['latin']});
@@ -26,7 +26,6 @@ export default function RootLayout({
         <AppRouterCacheProvider>{children}</AppRouterCacheProvider>
         <SpeedInsights />
       </body>
-      <GoogleTagManager gtmId='GTM-QF4Z451TJF' />
       <GoogleAnalytics gaId='G-QF4Z451TJF' />
     </html>
   );
