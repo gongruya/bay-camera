@@ -67,7 +67,7 @@ export default function LeafletMapContainer({style, cloudMap, onChange}: Leaflet
 
   const [heatLayer, setHeatLayer] = useState(
     new HeatmapOverlay({
-      radius: 0.2,
+      radius: 0.25,
       maxOpacity: .85,
       scaleRadius: true,
       useLocalExtrema: false,
