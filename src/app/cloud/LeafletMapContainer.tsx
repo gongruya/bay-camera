@@ -1,6 +1,5 @@
 import 'leaflet/dist/leaflet.css';
-import React, {useEffect, CSSProperties, useState} from 'react';
-import {MapContainer, TileLayer, useMap, useMapEvent} from 'react-leaflet';
+import React, {useEffect, CSSProperties, useState, useCallback} from 'react';
 import L, {LatLngExpression} from 'leaflet';
 import {CloudCoverage} from '@/weather/hrrr';
 
@@ -20,46 +19,6 @@ const HEAT_MAP_GRADIENT = {
   '1': '#fff',
 }
 
-function FlyMapTo(props: {center: LatLngExpression}) {
-  const map = useMap();
-
-  useEffect(() => {
-    map.setView(props.center);
-  }, [props.center]);
-
-  return null;
-}
-
-interface CloudHeatMapProps {
-  heatLayer: any;
-  cloudMap: CloudCoverage[];
-  onChange: (bounds: L.LatLngBounds) => void;
-}
-
-function CloudHeatMap(props: CloudHeatMapProps) {
-  const map = useMap();
-  if (!map.hasLayer(props.heatLayer)) {
-    props.heatLayer.addTo(map);
-  }
-
-  useEffect(() => {
-    props.onChange(map.getBounds());
-  }, []);
-
-  useEffect(() => {
-    props.heatLayer.setData({
-      max: 100,
-      data: props.cloudMap,
-    });
-  }, [props.cloudMap]);
-
-  useMapEvent('moveend', () => {
-    props.onChange(map.getBounds());
-  });
-
-  return null;
-}
-
 interface LeafletMapContainerProps {
   style: CSSProperties;
   center: LatLngExpression;
@@ -68,7 +27,7 @@ interface LeafletMapContainerProps {
 }
 
 export default function LeafletMapContainer({style, center, cloudMap, onChange}: LeafletMapContainerProps) {
-  const [heatLayer, setHeatLayer] = useState(
+  const [heatLayer] = useState(
     new HeatmapOverlay({
       radius: 0.25,
       maxOpacity: .85,
@@ -80,18 +39,39 @@ export default function LeafletMapContainer({style, center, cloudMap, onChange}:
       valueField: 'val',
     }));
 
-  return (
-    <MapContainer center={center} zoom={8} style={style}
-      zoomDelta={1} zoomSnap={1} maxBounds={[[18, -135], [55, -60]]}
-    >
-      <TileLayer
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-        maxZoom={10}
-        minZoom={5}
-      />
-      <FlyMapTo center={center} />
-      <CloudHeatMap heatLayer={heatLayer} cloudMap={cloudMap} onChange={onChange} />
-    </MapContainer>
-  );
+  const [map, setMap] = useState<L.Map>();
+
+  const mapRef = useCallback((container: HTMLDivElement) => {
+    const leafletMap = L.map(container, {
+      zoomSnap: 1,
+      zoomDelta: 1,
+    }).setMaxBounds([[18, -135], [55, -60]]).setZoom(8);
+
+    leafletMap.addEventListener('moveend', () => {
+      onChange(leafletMap.getBounds());
+    });
+
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      maxZoom: 10,
+      minZoom: 5,
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(leafletMap);
+    heatLayer.addTo(leafletMap);
+
+    setMap(leafletMap);
+  }, [heatLayer]);
+
+  useEffect(() => {
+    map?.setView(center, 8);
+  }, [map, center]);
+
+  useEffect(() => {
+    heatLayer.setData({
+      max: 100,
+      data: cloudMap,
+    });
+  }, [heatLayer, cloudMap]);
+
+
+  return <div ref={mapRef} style={style} />;
 };
