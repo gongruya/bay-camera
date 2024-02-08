@@ -24,9 +24,11 @@ interface LeafletMapContainerProps {
   center: LatLngExpression;
   cloudMap: CloudCoverage[];
   onChange: (bounds: L.LatLngBounds) => void;
+  onClick?: (latlng: L.LatLng) => void;
 }
 
-export default function LeafletMapContainer({style, center, cloudMap, onChange}: LeafletMapContainerProps) {
+export default function LeafletMapContainer(props: LeafletMapContainerProps) {
+  const {style, center, cloudMap, onChange, onClick} = props;
   const [heatLayer] = useState(
     new HeatmapOverlay({
       radius: 0.25,
@@ -48,7 +50,15 @@ export default function LeafletMapContainer({style, center, cloudMap, onChange}:
     }).setMaxBounds([[18, -135], [55, -60]]).setZoom(8);
 
     leafletMap.addEventListener('moveend', () => {
-      onChange(leafletMap.getBounds());
+      if (onChange) {
+        onChange(leafletMap.getBounds());
+      }
+    });
+
+    leafletMap.addEventListener('click', ({latlng}) => {
+      if (onClick) {
+        onClick(latlng);
+      }
     });
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
