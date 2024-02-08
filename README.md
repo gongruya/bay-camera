@@ -8,7 +8,8 @@ webcams and other useful photography resources. It also offers an HRRR based
 cloud forecast map for sunrise and sunset color prediction.
 
 ## How to contribute
-Contributions are welcome! Just fork the project and make a pull request.
+Contributions are welcome! Just [fork](https://github.com/gongruya/bay-camera/fork) the 
+project and make a pull request.
 
 ## Attribution
 This site uses [Twemoji graphics](https://twemoji.twitter.com) licensed under
