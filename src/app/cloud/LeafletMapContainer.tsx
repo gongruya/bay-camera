@@ -72,6 +72,5 @@ export default function LeafletMapContainer({style, center, cloudMap, onChange}:
     });
   }, [heatLayer, cloudMap]);
 
-
   return <div ref={mapRef} style={style} />;
 };
