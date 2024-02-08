@@ -10,6 +10,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import CloudDoneIcon from '@mui/icons-material/CloudDone';
 import CloudOffIcon from '@mui/icons-material/CloudOff';
+import GitHubIcon from '@mui/icons-material/GitHub';
 import MenuIcon from '@mui/icons-material/Menu';
 import MyLocationIcon from '@mui/icons-material/MyLocation';
 
@@ -142,7 +143,7 @@ export function CloudPageWrapper() {
         onClose={() => {
           setDrawerOpen(false);
         }}>
-        <Box sx={{p: 2}}>
+        <Box p={2}>
           <IconButton onClick={() => {
             setDrawerOpen(false);
           }}>
@@ -177,10 +178,15 @@ export function CloudPageWrapper() {
                 )}
             </Select>
           </FormControl>
-          <Box sx={{my: 2, textAlign: 'center'}}>
+          <Box my={2} textAlign='center'>
             <Button variant='outlined' onClick={() => {setDrawerOpen(false);}}>
               Done
             </Button>
+          </Box>
+          <Box my={2}>
+            <IconButton href='https://github.com/gongruya/bay-camera'>
+              <GitHubIcon />
+            </IconButton>
           </Box>
         </Box>
       </Drawer>
