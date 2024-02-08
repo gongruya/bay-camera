@@ -1,5 +1,5 @@
 import 'leaflet/dist/leaflet.css';
-import React, {useEffect, CSSProperties, useState, useCallback} from 'react';
+import React, {useEffect, CSSProperties, useState, useCallback, useRef} from 'react';
 import L, {LatLngExpression} from 'leaflet';
 import {CloudCoverage} from '@/weather/hrrr';
 
@@ -19,16 +19,17 @@ const HEAT_MAP_GRADIENT = {
   '1': '#fff',
 }
 
-interface LeafletMapContainerProps {
+export interface LeafletMapContainerProps {
   style: CSSProperties;
   center: LatLngExpression;
   cloudMap: CloudCoverage[];
-  onChange: (bounds: L.LatLngBounds) => void;
-  onClick?: (latlng: L.LatLng) => void;
+  onChange?: (bounds: L.LatLngBounds) => void;
+  onClick?: (latlng: L.LatLng, cloud: number) => void;
+  popup?: React.ReactNode;
 }
 
 export default function LeafletMapContainer(props: LeafletMapContainerProps) {
-  const {style, center, cloudMap, onChange, onClick} = props;
+  const {style, center, cloudMap, onChange, onClick, popup} = props;
   const [heatLayer] = useState(
     new HeatmapOverlay({
       radius: 0.25,
@@ -42,6 +43,8 @@ export default function LeafletMapContainer(props: LeafletMapContainerProps) {
     }));
 
   const [map, setMap] = useState<L.Map>();
+  const [leafletPopup] = useState(L.popup({minWidth: 1}));
+  const popupRef = useRef<HTMLDivElement>(null);
 
   const mapRef = useCallback((container: HTMLDivElement) => {
     const leafletMap = L.map(container, {
@@ -57,7 +60,15 @@ export default function LeafletMapContainer(props: LeafletMapContainerProps) {
 
     leafletMap.addEventListener('click', ({latlng}) => {
       if (onClick) {
-        onClick(latlng);
+        const cloudCover = heatLayer._heatmap.getValueAt(
+          leafletMap.latLngToContainerPoint(latlng));
+        if (popupRef.current) {
+          leafletPopup.setContent(popupRef.current!);
+        } else {
+          leafletPopup.setContent(`${cloudCover}%`);
+        }
+        leafletPopup.setLatLng(latlng).openOn(leafletMap);
+        onClick(latlng, cloudCover);
       }
     });
 
@@ -82,5 +93,9 @@ export default function LeafletMapContainer(props: LeafletMapContainerProps) {
     });
   }, [heatLayer, cloudMap]);
 
-  return <div ref={mapRef} style={style} />;
+  return (
+    <div ref={mapRef} style={style}>
+      {popup && <div ref={popupRef}>{popup}</div>}
+    </div>
+  );
 };
