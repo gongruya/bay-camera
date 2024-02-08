@@ -59,15 +59,16 @@ export default function LeafletMapContainer(props: LeafletMapContainerProps) {
     });
 
     leafletMap.addEventListener('click', ({latlng}) => {
+      const cloudCover = heatLayer._heatmap.getValueAt(
+        leafletMap.latLngToContainerPoint(latlng));
+      if (popupRef.current) {
+        leafletPopup.setContent(popupRef.current!);
+      } else {
+        leafletPopup.setContent(`${cloudCover}%`);
+      }
+      leafletPopup.setLatLng(latlng).openOn(leafletMap);
+
       if (onClick) {
-        const cloudCover = heatLayer._heatmap.getValueAt(
-          leafletMap.latLngToContainerPoint(latlng));
-        if (popupRef.current) {
-          leafletPopup.setContent(popupRef.current!);
-        } else {
-          leafletPopup.setContent(`${cloudCover}%`);
-        }
-        leafletPopup.setLatLng(latlng).openOn(leafletMap);
         onClick(latlng, cloudCover);
       }
     });
