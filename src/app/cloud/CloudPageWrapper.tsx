@@ -68,7 +68,7 @@ export function CloudPageWrapper() {
           setLoading((l) => l - 1);
         });
     }
-  }, [modelDate, forecastHours, cloudLevel]);
+  }, [modelDate, forecastHours, cloudLevel, bounds]);
 
   return (modelDate && currentDate && <>
     <Typography variant='h5' color='primary' position='absolute' display='flex'
@@ -106,20 +106,8 @@ export function CloudPageWrapper() {
     }}
       cloudMap={cloudMap}
       center={center}
-      onChange={async (bounds) => {
+      onChange={(bounds) => {
         setBounds(bounds);
-        try {
-          setLoading((l) => l + 1);
-          const {cloud} =
-            await fetchHrrrCloud(modelDate, forecastHours, cloudLevel, bounds);
-          setCloudMap(cloud || []);
-          setErrorFound(false);
-        } catch {
-          setErrorOpen(true);
-          setErrorFound(true);
-        } finally {
-          setLoading((l) => l - 1);
-        }
       }}
     />
     <Box position='absolute' sx={{right: 16}}>
