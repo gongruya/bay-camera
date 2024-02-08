@@ -74,8 +74,8 @@ export function CloudPageWrapper() {
     <Typography variant='h5' color='primary' position='absolute' display='flex'
       sx={{
         pt: 2,
-        width: '100%',
-        justifyContent: 'center',
+        left: '50%',
+        transform: 'translateX(-50%)',
         alignItems: 'center'
       }}>
       {loading > 0 &&
