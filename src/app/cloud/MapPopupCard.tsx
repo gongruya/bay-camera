@@ -1,6 +1,6 @@
 import React from 'react';
 import {CloudLevel, hrrrRange} from '@/weather/hrrr';
-import {Box, Typography, Button, Table, TableHead, TableRow, TableCell, TableBody} from '@mui/material';
+import {Box, Typography, Button, Table, TableHead, TableRow, TableCell, TableBody, Link} from '@mui/material';
 import moment from 'moment';
 import {findSunriseSunsetTimes} from '@/astronomy/sun';
 
@@ -33,6 +33,9 @@ export function MapPopupCard({cloudLevel, cloudAmount, latlng, modelDate, onClic
   const times = findSunriseSunsetTimes(
     modelDate,
     moment(modelDate).add(hrrrRange(modelDate), 'hour').toDate(), latlng);
+  if (times.length == 0) {
+    times.push([]);
+  }
 
   return (
     <Box minWidth={280}>
@@ -51,19 +54,27 @@ export function MapPopupCard({cloudLevel, cloudAmount, latlng, modelDate, onClic
         <TableBody>
           {times.map(([sunrise, sunset], i) =>
             <TableRow key={i}>
-              <TableCell align='center'
-                sx={{cursor: onClick && sunrise ? 'pointer' : 'auto'}}
-                onClick={() => {
-                  onClick && sunrise && onClick({date: sunrise});
-                }}>
-                {formatDate(sunrise, 'MMM D, h:mm a')}
+              <TableCell align='center'>
+                {onClick && sunrise ?
+                  <Link href='#' onClick={(e) => {
+                    onClick && onClick({date: sunrise});
+                    e.preventDefault();
+                  }}>
+                    {formatDate(sunrise, 'MMM D, h:mm a')}
+                  </Link> :
+                  formatDate(sunrise, 'MMM D, h:mm a')
+                }
               </TableCell>
-              <TableCell align='center'
-                sx={{cursor: onClick && sunset ? 'pointer' : 'auto'}}
-                onClick={() => {
-                  onClick && sunset && onClick({date: sunset});
-                }}>
-                {formatDate(sunset, 'MMM D, h:mm a')}
+              <TableCell align='center'>
+                {onClick && sunset ?
+                  <Link href='#' onClick={(e) => {
+                    onClick && onClick({date: sunset});
+                    e.preventDefault();
+                  }}>
+                    {formatDate(sunset, 'MMM D, h:mm a')}
+                  </Link> :
+                  formatDate(sunset, 'MMM D, h:mm a')
+                }
               </TableCell>
             </TableRow>
           )}
