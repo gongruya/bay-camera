@@ -30,6 +30,7 @@ export function CloudPageWrapper() {
   const [currentDate, setCurrentDate] = useState<Date>();
   const [modelDate, setModelDate] = useState<Date>();
   const [forecastHours, setForecastHours] = useState(2);
+  const [forecastHoursSlider, setForecastHoursSlider] = useState(2);
   const [bounds, setBounds] = useState<LatLngBounds>();
   const [cloudLevel, setCloudLevel] = useState<CloudLevel>('high');
   const [cloudMap, setCloudMap] = useState<CloudCoverage[]>([]);
@@ -122,8 +123,9 @@ export function CloudPageWrapper() {
         modelDate={modelDate}
         onClick={({date}) => {
           if (date) {
-            setForecastHours(
-              Math.round(moment(date).diff(modelDate, 'minute') / 60));
+            const h = Math.round(moment(date).diff(modelDate, 'minute') / 60);
+            setForecastHours(h);
+            setForecastHoursSlider(h);
           }
         }}
       />}
@@ -208,7 +210,7 @@ export function CloudPageWrapper() {
     }}>
       <Slider
         aria-label='Forecast time'
-        value={forecastHours}
+        value={forecastHoursSlider}
         valueLabelFormat={
           (h) => {
             const m = moment(modelDate).add(h, 'hour');
@@ -222,6 +224,9 @@ export function CloudPageWrapper() {
         marks
         min={0}
         max={hrrrRange(modelDate)}
+        onChange={(e, value) => {
+          setForecastHoursSlider(value as number);
+        }}
         onChangeCommitted={(e, value) => {
           setForecastHours(value as number);
         }}
