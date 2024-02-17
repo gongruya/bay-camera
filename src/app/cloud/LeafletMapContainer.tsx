@@ -4,6 +4,7 @@ import {LeafletHeatmapLayer} from '@/leaflet/LeafletHeatmapLayer';
 import {LeafletMap} from '@/leaflet/LeafletMap';
 import {LeafletTileLayer} from '@/leaflet/LeafletTileLayer';
 import {LatLngExpression} from 'leaflet';
+import {LeafletPopup} from '@/leaflet/LeafletPopup';
 
 export interface LeafletMapContainerProps {
   style: CSSProperties;
@@ -29,7 +30,6 @@ export default function LeafletMapContainer(props: LeafletMapContainerProps) {
       style={props.style}
       onMove={props.onMove}
       onClick={props.onClick}
-      popup={props.popup}
     >
       <LeafletTileLayer
         url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
@@ -38,6 +38,9 @@ export default function LeafletMapContainer(props: LeafletMapContainerProps) {
         }} />
       <LeafletHeatmapLayer data={props.cloudMap} maxValue={100}
         onValueAvailable={props.onValueAvailable} />
+      <LeafletPopup options={{autoPan: false}}>
+        {props.popup}
+      </LeafletPopup>
     </LeafletMap>
   );
 };

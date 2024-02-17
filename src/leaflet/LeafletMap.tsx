@@ -9,15 +9,12 @@ export interface LeafletMapProps {
   options?: L.MapOptions;
   onMove?: (bounds: L.LatLngBounds) => void;
   onClick?: (latlng: L.LatLng) => void;
-  popup?: React.ReactNode;
   children?: React.ReactNode;
 }
 
 export function LeafletMap(props: LeafletMapProps) {
-  const {style, center, options, onMove, onClick, popup, children} = props;
+  const {style, center, options, onMove, onClick, children} = props;
   const [map, setMap] = useState<L.Map>();
-  const [leafletPopup] = useState(L.popup({minWidth: 1}));
-  const popupRef = useRef<HTMLDivElement>(null);
 
   const mapRef = useCallback((container: HTMLDivElement) => {
     const leafletMap = L.map(container, options);
@@ -29,11 +26,6 @@ export function LeafletMap(props: LeafletMapProps) {
     });
 
     leafletMap.addEventListener('click', ({latlng}) => {
-      if (popupRef.current) {
-        leafletPopup.setContent(popupRef.current);
-      }
-      leafletPopup.setLatLng(latlng).openOn(leafletMap);
-
       if (onClick) {
         onClick(latlng);
       }
@@ -48,7 +40,6 @@ export function LeafletMap(props: LeafletMapProps) {
 
   return (
     <div ref={mapRef} style={style}>
-      {popup && <div ref={popupRef}>{popup}</div>}
       <LeafletContext.Provider value={map}>
         {children}
       </LeafletContext.Provider>
