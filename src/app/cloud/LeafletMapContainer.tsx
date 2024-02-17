@@ -18,6 +18,14 @@ export interface LeafletMapContainerProps {
 export default function LeafletMapContainer(props: LeafletMapContainerProps) {
   return (
     <LeafletMap center={props.center}
+      options={{
+        zoomSnap: 1,
+        zoomDelta: 1,
+        maxBounds: [[18, -135], [55, -60]],
+        zoom: 8,
+        minZoom: 5,
+        maxZoom: 10,
+      }}
       style={props.style}
       onMove={props.onMove}
       onClick={props.onClick}
@@ -26,8 +34,6 @@ export default function LeafletMapContainer(props: LeafletMapContainerProps) {
       <LeafletTileLayer
         url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
         options={{
-          maxZoom: 10,
-          minZoom: 5,
           attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
         }} />
       <LeafletHeatmapLayer data={props.cloudMap} maxValue={100}

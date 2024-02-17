@@ -6,6 +6,7 @@ import {LeafletContext} from './context';
 export interface LeafletMapProps {
   style: CSSProperties;
   center: L.LatLngExpression;
+  options?: L.MapOptions;
   onMove?: (bounds: L.LatLngBounds) => void;
   onClick?: (latlng: L.LatLng) => void;
   popup?: React.ReactNode;
@@ -13,16 +14,13 @@ export interface LeafletMapProps {
 }
 
 export function LeafletMap(props: LeafletMapProps) {
-  const {style, center, onMove, onClick, popup, children} = props;
+  const {style, center, options, onMove, onClick, popup, children} = props;
   const [map, setMap] = useState<L.Map>();
   const [leafletPopup] = useState(L.popup({minWidth: 1}));
   const popupRef = useRef<HTMLDivElement>(null);
 
   const mapRef = useCallback((container: HTMLDivElement) => {
-    const leafletMap = L.map(container, {
-      zoomSnap: 1,
-      zoomDelta: 1,
-    }).setMaxBounds([[18, -135], [55, -60]]).setZoom(8);
+    const leafletMap = L.map(container, options);
 
     leafletMap.addEventListener('moveend', () => {
       if (onMove) {
