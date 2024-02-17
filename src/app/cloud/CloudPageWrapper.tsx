@@ -14,6 +14,7 @@ import CloudOffIcon from '@mui/icons-material/CloudOff';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import MenuIcon from '@mui/icons-material/Menu';
 import MyLocationIcon from '@mui/icons-material/MyLocation';
+import {ForecastSlider} from './ForecastSlider';
 
 const LeafletMapContainer =
   dynamic(() => import('@/app/cloud/LeafletMapContainer'), {ssr: false});
@@ -30,7 +31,6 @@ export function CloudPageWrapper() {
   const [currentDate, setCurrentDate] = useState<Date>();
   const [modelDate, setModelDate] = useState<Date>();
   const [forecastHours, setForecastHours] = useState(2);
-  const [forecastHoursSlider, setForecastHoursSlider] = useState(2);
   const [bounds, setBounds] = useState<LatLngBounds>();
   const [cloudLevel, setCloudLevel] = useState<CloudLevel>('high');
   const [cloudMap, setCloudMap] = useState<CloudCoverage[]>([]);
@@ -125,7 +125,6 @@ export function CloudPageWrapper() {
           if (date) {
             const h = Math.round(moment(date).diff(modelDate, 'minute') / 60);
             setForecastHours(h);
-            setForecastHoursSlider(h);
           }
         }}
       />}
@@ -204,33 +203,11 @@ export function CloudPageWrapper() {
         </Box>
       </Drawer>
     </Box>
-    <Box sx={{
-      zIndex: 999, position: 'absolute',
-      bottom: 8, left: 40, right: 40,
-    }}>
-      <Slider
-        aria-label='Forecast time'
-        value={forecastHoursSlider}
-        valueLabelFormat={
-          (h) => {
-            const m = moment(modelDate).add(h, 'hour');
-            return <Box sx={{textAlign: 'center'}}>
-              <Box>{m.format('MMM Do')}</Box>
-              <Box>{m.format('h a')}</Box>
-            </Box>;
-          }}
-        valueLabelDisplay='on'
-        step={1}
-        marks
-        min={0}
-        max={hrrrRange(modelDate)}
-        onChange={(e, value) => {
-          setForecastHoursSlider(value as number);
-        }}
-        onChangeCommitted={(e, value) => {
-          setForecastHours(value as number);
-        }}
-      />
+    <Box position='absolute' zIndex={999} bottom={8} left={40} right={40}>
+      <ForecastSlider value={forecastHours} modelDate={modelDate}
+        onChangeCommitted={(value) => {
+          setForecastHours(value);
+        }} />
     </Box>
     <Snackbar open={errorOpen} autoHideDuration={2000}
       onClose={() => {setErrorOpen(false);}}
