@@ -12,7 +12,7 @@ export function LeafletTileLayer({url, options}: LeafletTileLayerProps) {
 
   useEffect(() => {
     maybeMap?.addLayer(new TileLayer(url, options));
-  }, [url, options, maybeMap]);
+  }, [maybeMap]);
 
   return null;
 }
