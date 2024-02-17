@@ -208,7 +208,7 @@ export function CloudPageWrapper() {
     }}>
       <Slider
         aria-label='Forecast time'
-        defaultValue={2}
+        value={forecastHours}
         valueLabelFormat={
           (h) => {
             const m = moment(modelDate).add(h, 'hour');
