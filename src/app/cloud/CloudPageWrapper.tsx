@@ -6,7 +6,7 @@ import {CloudCoverage, CloudLevel, fetchHrrrCloud, hrrrRange} from '@/weather/hr
 import {Box, Button, CircularProgress, Drawer, FormControl, IconButton, InputLabel, MenuItem, Select, Slider, Snackbar, Typography, styled} from '@mui/material';
 import dynamic from 'next/dynamic';
 import {useEffect, useState} from 'react';
-import {LatLngBounds, LatLngExpression, LatLngTuple} from 'leaflet';
+import {LatLngBounds, LatLngExpression, LatLngLiteral, LatLngTuple} from 'leaflet';
 import CloseIcon from '@mui/icons-material/Close';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import CloudDoneIcon from '@mui/icons-material/CloudDone';
@@ -14,6 +14,9 @@ import CloudOffIcon from '@mui/icons-material/CloudOff';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import MenuIcon from '@mui/icons-material/Menu';
 import MyLocationIcon from '@mui/icons-material/MyLocation';
+import {LeafletHeatmapLayer} from '@/leaflet/LeafletHeatmapLayer';
+import {LeafletMap} from '@/leaflet/LeafletMap';
+import {LeafletTileLayer} from '@/leaflet/LeafletTileLayer';
 
 const LeafletMapContainer =
   dynamic(() => import('@/app/cloud/LeafletMapContainer'), {ssr: false});
@@ -37,7 +40,9 @@ export function CloudPageWrapper() {
   const [errorOpen, setErrorOpen] = useState(false);
   const [errorFound, setErrorFound] = useState(false);
   const [loading, setLoading] = useState(0);
-  const [clickedPoint, setClickedPoint] = useState<CloudCoverage>();
+
+  const [clickedLocation, setClickedLocation] = useState<LatLngLiteral>();
+  const [cloudAmount, setCloudAmount] = useState<number>(0);
 
   // Center of the map defaulted to San Francisco.
   const [center, setCenter] =
@@ -98,25 +103,25 @@ export function CloudPageWrapper() {
         bay.camera
       </Typography>
     </Typography>
-    <LeafletMapContainer style={{
-      position: 'absolute',
-      top: 0,
-      right: 0,
-      bottom: 0,
-      left: 0,
-      zIndex: -1,
-    }}
-      cloudMap={cloudMap}
+    <LeafletMapContainer
       center={center}
-      onChange={(bounds) => {
+      style={{
+        position: 'absolute',
+        top: 0,
+        right: 0,
+        bottom: 0,
+        left: 0,
+        zIndex: -1,
+      }}
+      onMove={(bounds) => {
         setBounds(bounds);
       }}
-      onClick={({lat, lng}, cloud) => {
-        setClickedPoint({lat: lat, lng: lng, val: cloud});
+      onClick={({lat, lng}) => {
+        setClickedLocation({lat: lat, lng: lng});
       }}
       popup={<MapPopupCard cloudLevel={cloudLevel}
-        cloudAmount={clickedPoint?.val || 0}
-        latlng={[clickedPoint?.lat || 0, clickedPoint?.lng || 0]}
+        cloudAmount={cloudAmount}
+        latlng={[clickedLocation?.lat || 0, clickedLocation?.lng || 0]}
         modelDate={modelDate}
         onClick={({date}) => {
           if (date) {
@@ -125,7 +130,12 @@ export function CloudPageWrapper() {
           }
         }}
       />}
+      cloudMap={cloudMap}
+      onValueAvailable={(value) => {
+        setCloudAmount(value);
+      }}
     />
+
     <Box position='absolute' sx={{right: 16}}>
       <Box my={2}>
         <SolidIconButton onClick={() => {
