@@ -29,7 +29,7 @@ export interface LeafletHeatmapLayerProps {
   onValueAvailable?: (value: number, latlng: LatLngLiteral) => void;
 };
 
-export function LeafletHeatmapLayer({data, maxValue, onValueAvailable}: LeafletHeatmapLayerProps) {
+export function LeafletHeatmapLayer({data, maxValue = 1.0, onValueAvailable}: LeafletHeatmapLayerProps) {
   const maybeMap = useLeafletMap();
   const [latlng, setLatlng] = useState<LatLngLiteral>();
 
@@ -53,7 +53,7 @@ export function LeafletHeatmapLayer({data, maxValue, onValueAvailable}: LeafletH
 
   useEffect(() => {
     heatLayer.setData({
-      max: maxValue || 1.0,
+      max: maxValue,
       data: data,
     });
   }, [data]);
