@@ -1,4 +1,4 @@
-import L, {TileLayerOptions} from 'leaflet';
+import {TileLayer, TileLayerOptions} from 'leaflet';
 import {useEffect} from 'react';
 import {useLeafletMap} from './context';
 
@@ -11,7 +11,7 @@ export function LeafletTileLayer({url, options}: LeafletTileLayerProps) {
   const maybeMap = useLeafletMap();
 
   useEffect(() => {
-    maybeMap?.addLayer(L.tileLayer(url, options));
+    maybeMap?.addLayer(new TileLayer(url, options));
   }, [url, options, maybeMap]);
 
   return null;

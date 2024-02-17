@@ -1,11 +1,11 @@
 import 'leaflet/dist/leaflet.css';
 import React, {useEffect, CSSProperties, useState, useCallback, useRef, Children} from 'react';
-import L, {LatLngExpression, TileLayerOptions} from 'leaflet';
+import L from 'leaflet';
 import {LeafletContext} from './context';
 
 export interface LeafletMapProps {
   style: CSSProperties;
-  center: LatLngExpression;
+  center: L.LatLngExpression;
   onMove?: (bounds: L.LatLngBounds) => void;
   onClick?: (latlng: L.LatLng) => void;
   popup?: React.ReactNode;

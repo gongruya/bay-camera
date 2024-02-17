@@ -14,9 +14,6 @@ import CloudOffIcon from '@mui/icons-material/CloudOff';
 import GitHubIcon from '@mui/icons-material/GitHub';
 import MenuIcon from '@mui/icons-material/Menu';
 import MyLocationIcon from '@mui/icons-material/MyLocation';
-import {LeafletHeatmapLayer} from '@/leaflet/LeafletHeatmapLayer';
-import {LeafletMap} from '@/leaflet/LeafletMap';
-import {LeafletTileLayer} from '@/leaflet/LeafletTileLayer';
 
 const LeafletMapContainer =
   dynamic(() => import('@/app/cloud/LeafletMapContainer'), {ssr: false});
