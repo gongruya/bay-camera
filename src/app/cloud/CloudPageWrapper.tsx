@@ -1,5 +1,6 @@
 'use client'
 
+import {MapPopupCard} from './MapPopupCard';
 import moment from 'moment';
 import {CloudCoverage, CloudLevel, fetchHrrrCloud, hrrrRange} from '@/weather/hrrr';
 import {Box, Button, CircularProgress, Drawer, FormControl, IconButton, InputLabel, MenuItem, Select, Slider, Snackbar, Typography, styled} from '@mui/material';
@@ -36,6 +37,7 @@ export function CloudPageWrapper() {
   const [errorOpen, setErrorOpen] = useState(false);
   const [errorFound, setErrorFound] = useState(false);
   const [loading, setLoading] = useState(0);
+  const [clickedPoint, setClickedPoint] = useState<CloudCoverage>();
 
   // Center of the map defaulted to San Francisco.
   const [center, setCenter] =
@@ -109,6 +111,20 @@ export function CloudPageWrapper() {
       onChange={(bounds) => {
         setBounds(bounds);
       }}
+      onClick={({lat, lng}, cloud) => {
+        setClickedPoint({lat: lat, lng: lng, val: cloud});
+      }}
+      popup={<MapPopupCard cloudLevel={cloudLevel}
+        cloudAmount={clickedPoint?.val || 0}
+        latlng={[clickedPoint?.lat || 0, clickedPoint?.lng || 0]}
+        modelDate={modelDate}
+        onClick={({date}) => {
+          if (date) {
+            setForecastHours(
+              Math.round(moment(date).diff(modelDate, 'minute') / 60));
+          }
+        }}
+      />}
     />
     <Box position='absolute' sx={{right: 16}}>
       <Box my={2}>
@@ -185,7 +201,7 @@ export function CloudPageWrapper() {
     }}>
       <Slider
         aria-label='Forecast time'
-        defaultValue={forecastHours}
+        value={forecastHours}
         valueLabelFormat={
           (h) => {
             const m = moment(modelDate).add(h, 'hour');
