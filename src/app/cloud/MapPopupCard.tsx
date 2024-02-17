@@ -69,6 +69,9 @@ export function MapPopupCard({cloudLevel, cloudAmount, latlng, modelDate, onClic
           )}
         </TableBody>
       </Table>
+      <Typography variant='caption' component='div' textAlign='center' mt={2}>
+        HRRR@ {moment(modelDate).format('lll Z')}
+      </Typography>
     </Box >
   );
 }
