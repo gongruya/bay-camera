@@ -27,6 +27,7 @@ export default function LeafletMapContainer(props: LeafletMapContainerProps) {
         minZoom: 5,
         maxZoom: 10,
       }}
+      zoom={8}
       style={props.style}
       onMove={props.onMove}
       onClick={props.onClick}

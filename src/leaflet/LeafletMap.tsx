@@ -6,6 +6,7 @@ import {LeafletContext} from './context';
 export interface LeafletMapProps {
   style: CSSProperties;
   center: L.LatLngExpression;
+  zoom?: number;
   options?: L.MapOptions;
   onMove?: (bounds: L.LatLngBounds) => void;
   onClick?: (latlng: L.LatLng) => void;
@@ -13,7 +14,7 @@ export interface LeafletMapProps {
 }
 
 export function LeafletMap(props: LeafletMapProps) {
-  const {style, center, options, onMove, onClick, children} = props;
+  const {style, center, zoom, options, onMove, onClick, children} = props;
   const [map, setMap] = useState<L.Map>();
 
   const mapRef = useCallback((container: HTMLDivElement) => {
@@ -35,8 +36,8 @@ export function LeafletMap(props: LeafletMapProps) {
   }, []);
 
   useEffect(() => {
-    map?.setView(center, 8);
-  }, [map, center]);
+    map?.setView(center, zoom);
+  }, [map, center, zoom]);
 
   return (
     <div ref={mapRef} style={style}>
