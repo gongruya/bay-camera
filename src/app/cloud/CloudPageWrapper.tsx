@@ -29,7 +29,7 @@ const SolidIconButton = styled(IconButton)(({theme}) => ({
 export function CloudPageWrapper() {
   const [currentDate, setCurrentDate] = useState<Date>();
   const [modelDate, setModelDate] = useState<Date>();
-  const [forecastHours, setForecastHours] = useState(0);
+  const [forecastHours, setForecastHours] = useState(2);
   const [bounds, setBounds] = useState<LatLngBounds>();
   const [cloudLevel, setCloudLevel] = useState<CloudLevel>('high');
   const [cloudMap, setCloudMap] = useState<CloudCoverage[]>([]);
