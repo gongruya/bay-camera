@@ -1,6 +1,6 @@
 import React from 'react';
 import {CloudLevel, hrrrRange} from '@/weather/hrrr';
-import {Box, Typography, Button, Table, TableHead, TableRow, TableCell, TableBody, Link} from '@mui/material';
+import {Box, Typography, Table, TableHead, TableRow, TableCell, TableBody, Link} from '@mui/material';
 import moment from 'moment';
 import {findSunriseSunsetTimes} from '@/astronomy/sun';
 import {LatLngType} from '@/geo/latlng';

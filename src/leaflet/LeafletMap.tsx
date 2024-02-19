@@ -1,5 +1,5 @@
 import 'leaflet/dist/leaflet.css';
-import React, {useEffect, CSSProperties, useState, useCallback, useRef, Children} from 'react';
+import React, {useEffect, CSSProperties, useState, useCallback} from 'react';
 import L from 'leaflet';
 import {LeafletContext} from './context';
 
