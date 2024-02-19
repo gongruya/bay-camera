@@ -7,7 +7,6 @@ import {CloudCoverage, CloudLevel, fetchHrrrCloud, hrrrRange} from '@/weather/hr
 import {Box, Button, CircularProgress, Drawer, FormControl, IconButton, InputLabel, MenuItem, Select, Slider, Snackbar, Typography, styled} from '@mui/material';
 import dynamic from 'next/dynamic';
 import {useEffect, useState} from 'react';
-import {LatLng, LatLngExpression, LatLngTuple} from 'leaflet';
 import CloseIcon from '@mui/icons-material/Close';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import CloudDoneIcon from '@mui/icons-material/CloudDone';
@@ -45,8 +44,8 @@ export function CloudPageWrapper() {
 
   // Center of the map defaulted to San Francisco.
   const [center, setCenter] =
-    useState<LatLngExpression>([37.774546, -122.433523]);
-  const [gpsCenter, setGpsCenter] = useState<LatLngTuple>();
+    useState<LatLngType>({lat: 37.774546, lng: -122.433523});
+  const [gpsCenter, setGpsCenter] = useState<LatLngType>();
 
   useEffect(() => {
     const date = moment().subtract(1, 'hour').startOf('hour').toDate();
@@ -56,7 +55,7 @@ export function CloudPageWrapper() {
     // Preload the GPS location.
     window.navigator.geolocation.getCurrentPosition(
       ({coords: {latitude, longitude}}) => {
-        setGpsCenter([latitude, longitude]);
+        setGpsCenter({lat: latitude, lng: longitude});
       })
   }, []);
 
@@ -145,8 +144,10 @@ export function CloudPageWrapper() {
       </Box>
       <Box my={2}>
         <SolidIconButton disabled={!gpsCenter} onClick={() => {
-          // Make a copy so it can be used multiple times.
-          setCenter([...gpsCenter!]);
+          if (gpsCenter) {
+            // Make a copy so it can be used multiple times.
+            setCenter({...gpsCenter!});
+          }
         }}>
           <MyLocationIcon />
         </SolidIconButton>
