@@ -3,6 +3,7 @@ import {CloudLevel, hrrrRange} from '@/weather/hrrr';
 import {Box, Typography, Button, Table, TableHead, TableRow, TableCell, TableBody, Link} from '@mui/material';
 import moment from 'moment';
 import {findSunriseSunsetTimes} from '@/astronomy/sun';
+import {LatLngType} from '@/geo/latlng';
 
 const EM_DASH = '—';
 
@@ -24,12 +25,16 @@ export interface MapPopupCardClickData {
 export interface MapPopupCardProps {
   cloudLevel: CloudLevel;
   cloudAmount: number;
-  latlng: [number, number];
+  latlng?: LatLngType;
   modelDate: Date;
   onClick?: (data: MapPopupCardClickData) => void;
 }
 
 export function MapPopupCard({cloudLevel, cloudAmount, latlng, modelDate, onClick}: MapPopupCardProps) {
+  if (!latlng) {
+    return <Box minWidth={280}></Box>;
+  }
+
   const times = findSunriseSunsetTimes(
     modelDate,
     moment(modelDate).add(hrrrRange(modelDate), 'hour').toDate(), latlng);

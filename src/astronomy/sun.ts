@@ -1,7 +1,8 @@
+import {LatLngType} from '@/geo/latlng';
 import moment from 'moment';
 import {getTimes} from 'suncalc';
 
-export function findSunriseSunsetTimes(start: Date, end: Date, latlng: [number, number]): [Date?, Date?][] {
+export function findSunriseSunsetTimes(start: Date, end: Date, latlng: LatLngType): [Date?, Date?][] {
   const inDateRange = (m: moment.Moment): boolean => {
     return m.diff(start) >= 0 && m.diff(end) <= 0;
   }
@@ -11,7 +12,7 @@ export function findSunriseSunsetTimes(start: Date, end: Date, latlng: [number, 
   const times: [Date?, Date?][] = [];
 
   for (let m = ms; m.diff(me) < 0; m = m.add(1, 'day')) {
-    let {sunrise, sunset} = getTimes(m.toDate(), latlng[0], latlng[1]);
+    let {sunrise, sunset} = getTimes(m.toDate(), latlng.lat, latlng.lng);
     const mSunrise = moment(sunrise);
     const mSunset = moment(sunset);
     if (!mSunrise.isValid() && !mSunset.isValid()) {

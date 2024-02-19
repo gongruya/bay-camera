@@ -1,20 +1,21 @@
 'use client'
 
 import {MapPopupCard} from './MapPopupCard';
+import {ForecastSlider} from './ForecastSlider';
 import moment from 'moment';
 import {CloudCoverage, CloudLevel, fetchHrrrCloud, hrrrRange} from '@/weather/hrrr';
 import {Box, Button, CircularProgress, Drawer, FormControl, IconButton, InputLabel, MenuItem, Select, Slider, Snackbar, Typography, styled} from '@mui/material';
 import dynamic from 'next/dynamic';
 import {useEffect, useState} from 'react';
-import {LatLngBounds, LatLngExpression, LatLngLiteral, LatLngTuple} from 'leaflet';
+import {LatLng, LatLngExpression, LatLngTuple} from 'leaflet';
 import CloseIcon from '@mui/icons-material/Close';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
 import CloudDoneIcon from '@mui/icons-material/CloudDone';
 import CloudOffIcon from '@mui/icons-material/CloudOff';
 import GitHubIcon from '@mui/icons-material/GitHub';
-import MenuIcon from '@mui/icons-material/Menu';
+import LayersIcon from '@mui/icons-material/Layers';
 import MyLocationIcon from '@mui/icons-material/MyLocation';
-import {ForecastSlider} from './ForecastSlider';
+import {LatLngBoundsType, LatLngType} from '@/geo/latlng';
 
 const LeafletMapContainer =
   dynamic(() => import('@/app/cloud/LeafletMapContainer'), {ssr: false});
@@ -31,7 +32,7 @@ export function CloudPageWrapper() {
   const [currentDate, setCurrentDate] = useState<Date>();
   const [modelDate, setModelDate] = useState<Date>();
   const [forecastHours, setForecastHours] = useState(2);
-  const [bounds, setBounds] = useState<LatLngBounds>();
+  const [bounds, setBounds] = useState<LatLngBoundsType>();
   const [cloudLevel, setCloudLevel] = useState<CloudLevel>('high');
   const [cloudMap, setCloudMap] = useState<CloudCoverage[]>([]);
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -39,7 +40,7 @@ export function CloudPageWrapper() {
   const [errorFound, setErrorFound] = useState(false);
   const [loading, setLoading] = useState(0);
 
-  const [clickedLocation, setClickedLocation] = useState<LatLngLiteral>();
+  const [pinLocation, setPinLocation] = useState<LatLngType>();
   const [cloudAmount, setCloudAmount] = useState<number>(0);
 
   // Center of the map defaulted to San Francisco.
@@ -112,14 +113,14 @@ export function CloudPageWrapper() {
         zIndex: -1,
       }}
       onMove={(bounds) => {
-        setBounds(bounds);
+        setBounds({sw: bounds.getSouthWest(), ne: bounds.getNorthEast()});
       }}
       onClick={({lat, lng}) => {
-        setClickedLocation({lat: lat, lng: lng});
+        setPinLocation({lat, lng});
       }}
       popup={<MapPopupCard cloudLevel={cloudLevel}
         cloudAmount={cloudAmount}
-        latlng={[clickedLocation?.lat || 0, clickedLocation?.lng || 0]}
+        latlng={pinLocation}
         modelDate={modelDate}
         onClick={({date}) => {
           if (date) {
@@ -139,7 +140,7 @@ export function CloudPageWrapper() {
         <SolidIconButton onClick={() => {
           setDrawerOpen(true);
         }}>
-          <MenuIcon />
+          <LayersIcon />
         </SolidIconButton>
       </Box>
       <Box my={2}>
@@ -205,6 +206,7 @@ export function CloudPageWrapper() {
     </Box>
     <Box position='absolute' zIndex={999} bottom={8} left={40} right={40}>
       <ForecastSlider value={forecastHours} modelDate={modelDate}
+        pinLocation={pinLocation}
         onChangeCommitted={(value) => {
           setForecastHours(value);
         }} />

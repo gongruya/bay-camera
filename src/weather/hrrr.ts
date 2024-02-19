@@ -1,4 +1,4 @@
-import {LatLngBounds} from 'leaflet';
+import {LatLngBoundsType} from '@/geo/latlng';
 
 /**
 * Finds the HRRR forecast range. HRRR normally forecasts 18h but it forecasts
@@ -29,10 +29,9 @@ export interface HrrrResponse {
 export type CloudLevel = 'low' | 'mid' | 'high';
 
 export async function fetchHrrrCloud(
-  date: Date, forecastHours: number, level: CloudLevel, bounds: LatLngBounds
+  date: Date, forecastHours: number, level: CloudLevel,
+  {sw, ne}: LatLngBoundsType
 ): Promise<HrrrResponse> {
-  const sw = bounds.getSouthWest();
-  const ne = bounds.getNorthEast();
   const response =
     await fetch('/api/cloud?' + new URLSearchParams({
       'level': level,
