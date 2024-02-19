@@ -24,3 +24,5 @@ export function LeafletPopup({children, options}: LeafletPopupProps) {
 
   return <div ref={popupRef}>{children}</div>;
 }
+
+export default LeafletPopup;

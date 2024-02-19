@@ -5,7 +5,6 @@ import {ForecastSlider} from './ForecastSlider';
 import moment from 'moment';
 import {CloudCoverage, CloudLevel, fetchHrrrCloud, hrrrRange} from '@/weather/hrrr';
 import {Box, Button, CircularProgress, Drawer, FormControl, IconButton, InputLabel, MenuItem, Select, Slider, Snackbar, Typography, styled} from '@mui/material';
-import dynamic from 'next/dynamic';
 import {useEffect, useState} from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
@@ -15,9 +14,7 @@ import GitHubIcon from '@mui/icons-material/GitHub';
 import LayersIcon from '@mui/icons-material/Layers';
 import MyLocationIcon from '@mui/icons-material/MyLocation';
 import {LatLngBoundsType, LatLngType} from '@/geo/latlng';
-
-const LeafletMapContainer =
-  dynamic(() => import('@/app/cloud/LeafletMapContainer'), {ssr: false});
+import {LeafletMapContainer} from '@/app/cloud/LeafletMapContainer';
 
 const SolidIconButton = styled(IconButton)(({theme}) => ({
   color: theme.palette.primary.main,

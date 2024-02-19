@@ -47,3 +47,5 @@ export function LeafletMap(props: LeafletMapProps) {
     </div>
   );
 };
+
+export default LeafletMap;

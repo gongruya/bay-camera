@@ -68,3 +68,5 @@ export function LeafletHeatmapLayer({data, maxValue = 1.0, onValueAvailable}: Le
 
   return null;
 }
+
+export default LeafletHeatmapLayer;

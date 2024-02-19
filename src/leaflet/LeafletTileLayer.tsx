@@ -16,3 +16,5 @@ export function LeafletTileLayer({url, options}: LeafletTileLayerProps) {
 
   return null;
 }
+
+export default LeafletTileLayer;
