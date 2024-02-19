@@ -27,7 +27,7 @@ const SolidIconButton = styled(IconButton)(({theme}) => ({
 export function CloudPageWrapper() {
   const [currentDate, setCurrentDate] = useState<Date>();
   const [modelDate, setModelDate] = useState<Date>();
-  const [forecastHours, setForecastHours] = useState(2);
+  const [forecastMinutes, setForecastMinutes] = useState(120);
   const [bounds, setBounds] = useState<LatLngBoundsType>();
   const [cloudLevel, setCloudLevel] = useState<CloudLevel>('high');
   const [cloudMap, setCloudMap] = useState<CloudCoverage[]>([]);
@@ -59,7 +59,7 @@ export function CloudPageWrapper() {
   useEffect(() => {
     if (modelDate && bounds) {
       setLoading((l) => l + 1);
-      fetchHrrrCloud(modelDate, forecastHours, cloudLevel, bounds)
+      fetchHrrrCloud(modelDate, Math.round(forecastMinutes / 60), cloudLevel, bounds)
         .then(({cloud}) => {
           setCloudMap(cloud || []);
           setErrorFound(false);
@@ -70,7 +70,7 @@ export function CloudPageWrapper() {
           setLoading((l) => l - 1);
         });
     }
-  }, [modelDate, forecastHours, cloudLevel, bounds]);
+  }, [modelDate, Math.round(forecastMinutes / 60), cloudLevel, bounds]);
 
   return (modelDate && currentDate && <>
     <Typography variant='h5' color='primary' position='absolute' display='flex'
@@ -120,8 +120,7 @@ export function CloudPageWrapper() {
         modelDate={modelDate}
         onClick={({date}) => {
           if (date) {
-            const h = Math.round(moment(date).diff(modelDate, 'minute') / 60);
-            setForecastHours(h);
+            setForecastMinutes(moment(date).diff(modelDate, 'minute'));
           }
         }}
       />}
@@ -203,10 +202,10 @@ export function CloudPageWrapper() {
       </Drawer>
     </Box>
     <Box position='absolute' zIndex={999} bottom={8} left={40} right={40}>
-      <ForecastSlider value={forecastHours} modelDate={modelDate}
+      <ForecastSlider value={forecastMinutes} modelDate={modelDate}
         pinLocation={pinLocation}
         onChangeCommitted={(value) => {
-          setForecastHours(value);
+          setForecastMinutes(value);
         }} />
     </Box>
     <Snackbar open={errorOpen} autoHideDuration={2000}
