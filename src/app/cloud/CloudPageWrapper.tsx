@@ -4,7 +4,7 @@ import {MapPopupCard} from './MapPopupCard';
 import {ForecastSlider} from './ForecastSlider';
 import moment from 'moment';
 import {CloudCoverage, CloudLevel, fetchHrrrCloud, hrrrRange} from '@/weather/hrrr';
-import {Box, Button, CircularProgress, Drawer, FormControl, IconButton, InputLabel, MenuItem, Select, Snackbar, Typography, styled} from '@mui/material';
+import {Box, Button, CircularProgress, Drawer, FormControl, IconButton, InputLabel, MenuItem, Paper, Select, Snackbar, Typography, styled, useTheme} from '@mui/material';
 import {useEffect, useState} from 'react';
 import CloseIcon from '@mui/icons-material/Close';
 import CloudDownloadIcon from '@mui/icons-material/CloudDownload';
@@ -28,6 +28,7 @@ export function CloudPageWrapper() {
   const [currentDate, setCurrentDate] = useState<Date>();
   const [modelDate, setModelDate] = useState<Date>();
   const [forecastMinutes, setForecastMinutes] = useState(120);
+  const [forecastHours, setForecastHours] = useState(2);
   const [bounds, setBounds] = useState<LatLngBoundsType>();
   const [cloudLevel, setCloudLevel] = useState<CloudLevel>('high');
   const [cloudMap, setCloudMap] = useState<CloudCoverage[]>([]);
@@ -57,9 +58,13 @@ export function CloudPageWrapper() {
   }, []);
 
   useEffect(() => {
+    setForecastHours(Math.round(forecastMinutes / 60));
+  }, [forecastMinutes]);
+
+  useEffect(() => {
     if (modelDate && bounds) {
       setLoading((l) => l + 1);
-      fetchHrrrCloud(modelDate, Math.round(forecastMinutes / 60), cloudLevel, bounds)
+      fetchHrrrCloud(modelDate, forecastHours, cloudLevel, bounds)
         .then(({cloud}) => {
           setCloudMap(cloud || []);
           setErrorFound(false);
@@ -70,15 +75,14 @@ export function CloudPageWrapper() {
           setLoading((l) => l - 1);
         });
     }
-  }, [modelDate, Math.round(forecastMinutes / 60), cloudLevel, bounds]);
+  }, [modelDate, forecastHours, cloudLevel, bounds]);
 
   return (modelDate && currentDate && <>
     <Typography variant='h5' color='primary' position='absolute' display='flex'
-      sx={{
-        pt: 2,
-        left: '50%',
+      border={1} borderTop={0} borderColor='divider' borderRadius='0 0 8px 8px'
+      p={1} left='50%' alignItems='center' sx={{
+        backgroundColor: 'background.default',
         transform: 'translateX(-50%)',
-        alignItems: 'center'
       }}>
       {loading > 0 &&
         <Box display='inline-block' position='relative' sx={{width: 32, height: 32}}>
@@ -92,12 +96,12 @@ export function CloudPageWrapper() {
           {errorFound && <CloudOffIcon color='error' />}
         </Box>
       }
-      <Typography variant='h5' component='div' display='inline-block'
-        sx={{ml: 1}} color={errorFound ? 'error' : 'inherit'}
+      <Typography variant='h6' component='div' display='inline-block'
+        sx={{ml: 0.5}} color={errorFound ? 'error' : 'inherit'}
       >
-        bay.camera
+        @ {moment(modelDate).add(forecastHours, 'hour').format('MM/DD ha')}
       </Typography>
-    </Typography>
+    </Typography >
     <LeafletMapContainer
       center={center}
       style={{
