@@ -4,7 +4,7 @@ import {useEffect, useState} from 'react';
 
 export interface LeafletCircleProps {
   latlng: LatLngExpression;
-  options: CircleOptions;
+  options?: CircleOptions;
 }
 
 export function LeafletCircle({latlng, options}: LeafletCircleProps) {
