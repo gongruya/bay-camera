@@ -3,6 +3,7 @@ import {CloudCoverage} from '@/weather/hrrr';
 import {LatLngType} from '@/geo/latlng';
 
 import dynamic from 'next/dynamic';
+import {LatLngExpression} from 'leaflet';
 const LeafletMap =
   dynamic(() => import('@/leaflet/LeafletMap'), {ssr: false});
 const LeafletTileLayer =
@@ -19,6 +20,7 @@ export interface LeafletMapContainerProps {
   onMove: (bounds: L.LatLngBounds) => void;
   onClick: (latlng: L.LatLng) => void;
   onValueAvailable: (value: number) => void;
+  pinLocation?: LatLngExpression;
   popup?: React.ReactNode;
 }
 
@@ -45,7 +47,7 @@ export function LeafletMapContainer(props: LeafletMapContainerProps) {
         }} />
       <LeafletHeatmapLayer data={props.cloudMap} maxValue={100}
         onValueAvailable={props.onValueAvailable} />
-      <LeafletPopup options={{autoPan: false}}>
+      <LeafletPopup options={{autoPan: false}} latlng={props.pinLocation}>
         {props.popup}
       </LeafletPopup>
     </LeafletMap>

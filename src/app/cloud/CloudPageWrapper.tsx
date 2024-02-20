@@ -112,6 +112,7 @@ export function CloudPageWrapper() {
         left: 0,
         zIndex: -1,
       }}
+      pinLocation={pinLocation}
       onMove={(bounds) => {
         setBounds({sw: bounds.getSouthWest(), ne: bounds.getNorthEast()});
       }}
