@@ -31,8 +31,8 @@ export default function LeafletMapContainer(props: LeafletMapContainerProps) {
       }}
       zoom={8}
       style={props.style}
-      onMoveEnd={props.onMove}
-      onClick={props.onClick}
+      onMoveEnd={(_e, map) => props.onMove(map.getBounds())}
+      onClick={({latlng}) => props.onClick(latlng)}
     >
       <LeafletTileLayer
         url='https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'
