@@ -14,7 +14,10 @@ import GitHubIcon from '@mui/icons-material/GitHub';
 import LayersIcon from '@mui/icons-material/Layers';
 import MyLocationIcon from '@mui/icons-material/MyLocation';
 import {LatLngBoundsType, LatLngType} from '@/geo/latlng';
-import {LeafletMapContainer} from '@/app/cloud/LeafletMapContainer';
+
+import dynamic from 'next/dynamic';
+const LeafletMapContainer =
+  dynamic(() => import('@/app/cloud/LeafletMapContainer'), {ssr: false});
 
 const SolidIconButton = styled(IconButton)(({theme}) => ({
   color: theme.palette.primary.main,

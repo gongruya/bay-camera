@@ -1,5 +1,5 @@
 import {useEffect, useState} from 'react';
-import {useLeafletMap} from './context';
+import {useLeafletMap} from 'reaflet-map/hooks';
 import {LatLngLiteral} from 'leaflet';
 // leaflet-heatmap has no typescript declaration.
 const HeatmapOverlay = require('leaflet-heatmap');

@@ -1,17 +1,14 @@
 import React, {CSSProperties} from 'react';
 import {CloudCoverage} from '@/weather/hrrr';
 import {LatLngType} from '@/geo/latlng';
-
-import dynamic from 'next/dynamic';
 import {LatLngExpression} from 'leaflet';
-const LeafletMap =
-  dynamic(() => import('@/leaflet/LeafletMap'), {ssr: false});
-const LeafletTileLayer =
-  dynamic(() => import('@/leaflet/LeafletTileLayer'), {ssr: false});
-const LeafletHeatmapLayer =
-  dynamic(() => import('@/leaflet/LeafletHeatmapLayer'), {ssr: false});
-const LeafletPopup =
-  dynamic(() => import('@/leaflet/LeafletPopup'), {ssr: false});
+import {LeafletMap} from 'reaflet-map';
+import {LeafletTileLayer} from 'reaflet-map/raster';
+import {LeafletCircle, LeafletLine} from 'reaflet-map/vector';
+import {LeafletPopup} from 'reaflet-map/ui';
+
+import {LeafletMarker} from '@/leaflet/LeafletMarker';
+import {LeafletHeatmapLayer} from '@/leaflet/LeafletHeatmapLayer';
 
 export interface LeafletMapContainerProps {
   style: CSSProperties;
@@ -24,7 +21,7 @@ export interface LeafletMapContainerProps {
   popup?: React.ReactNode;
 }
 
-export function LeafletMapContainer(props: LeafletMapContainerProps) {
+export default function LeafletMapContainer(props: LeafletMapContainerProps) {
   return (
     <LeafletMap center={props.center}
       options={{
@@ -37,7 +34,7 @@ export function LeafletMapContainer(props: LeafletMapContainerProps) {
       }}
       zoom={8}
       style={props.style}
-      onMove={props.onMove}
+      onMoveEnd={props.onMove}
       onClick={props.onClick}
     >
       <LeafletTileLayer
