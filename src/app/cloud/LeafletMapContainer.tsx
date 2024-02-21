@@ -3,11 +3,8 @@ import {CloudCoverage} from '@/weather/hrrr';
 import {LatLngType} from '@/geo/latlng';
 import {LatLngExpression} from 'leaflet';
 import {LeafletMap} from 'reaflet-map';
-import {LeafletTileLayer} from 'reaflet-map/raster';
-import {LeafletCircle, LeafletLine} from 'reaflet-map/vector';
 import {LeafletPopup} from 'reaflet-map/ui';
-
-import {LeafletMarker} from '@/leaflet/LeafletMarker';
+import {LeafletTileLayer} from 'reaflet-map/raster';
 import {LeafletHeatmapLayer} from '@/leaflet/LeafletHeatmapLayer';
 
 export interface LeafletMapContainerProps {
