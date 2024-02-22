@@ -1,6 +1,6 @@
 import {LatLngType} from '@/geo/latlng';
 import moment from 'moment';
-import {getTimes} from 'suncalc';
+import {getPosition, getTimes} from 'suncalc';
 
 export type SunTime = [Date?, Date?];
 
@@ -29,4 +29,17 @@ export function findSunriseSunsetTimes(start: Date, end: Date, latlng: LatLngTyp
     ]);
   }
   return times;
+}
+
+export interface AltAzimuth {
+  altitude: number;
+  azimuth: number;
+}
+
+export function getSunPosition(date: Date, {lat, lng}: LatLngType): AltAzimuth {
+  const {altitude, azimuth} = getPosition(date, lat, lng);
+  return {
+    altitude,
+    azimuth: azimuth + Math.PI,
+  };
 }

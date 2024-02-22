@@ -16,6 +16,7 @@ import MyLocationIcon from '@mui/icons-material/MyLocation';
 import {LatLngBoundsType, LatLngType} from '@/geo/latlng';
 
 import dynamic from 'next/dynamic';
+import {AltAzimuth, getSunPosition} from '@/astronomy/sun';
 const LeafletMapContainer =
   dynamic(() => import('@/app/cloud/LeafletMapContainer'), {ssr: false});
 
@@ -30,6 +31,7 @@ const SolidIconButton = styled(IconButton)(({theme}) => ({
 export function CloudPageWrapper() {
   const [currentDate, setCurrentDate] = useState<Date>();
   const [modelDate, setModelDate] = useState<Date>();
+  const [sliderValueMinutes, setSliderValueMinutes] = useState(120);
   const [forecastMinutes, setForecastMinutes] = useState(120);
   const [forecastHours, setForecastHours] = useState(2);
   const [bounds, setBounds] = useState<LatLngBoundsType>();
@@ -42,6 +44,8 @@ export function CloudPageWrapper() {
 
   const [pinLocation, setPinLocation] = useState<LatLngType>();
   const [cloudAmount, setCloudAmount] = useState<number>(0);
+
+  const [sunPosition, setSunPosition] = useState<AltAzimuth>();
 
   // Center of the map defaulted to San Francisco.
   const [center, setCenter] =
@@ -79,6 +83,13 @@ export function CloudPageWrapper() {
         });
     }
   }, [modelDate, forecastHours, cloudLevel, bounds]);
+
+  useEffect(() => {
+    if (pinLocation) {
+      setSunPosition(getSunPosition(moment(modelDate)
+        .add(sliderValueMinutes, 'minute').toDate(), pinLocation));
+    }
+  }, [modelDate, sliderValueMinutes, pinLocation]);
 
   return (modelDate && currentDate && <>
     <Typography variant='h5' color='primary' position='absolute' display='flex'
@@ -136,6 +147,8 @@ export function CloudPageWrapper() {
       onValueAvailable={(value) => {
         setCloudAmount(value);
       }}
+      sunAzimuth={sunPosition && sunPosition.altitude > -Math.PI / 15 ?
+        sunPosition.azimuth : undefined}
     />
 
     <Box position='absolute' sx={{right: 16}}>
@@ -212,9 +225,8 @@ export function CloudPageWrapper() {
     <Box position='absolute' zIndex={999} bottom={8} left={40} right={40}>
       <ForecastSlider value={forecastMinutes} modelDate={modelDate}
         pinLocation={pinLocation}
-        onChangeCommitted={(value) => {
-          setForecastMinutes(value);
-        }} />
+        onChange={setSliderValueMinutes}
+        onChangeCommitted={setForecastMinutes} />
     </Box>
     <Snackbar open={errorOpen} autoHideDuration={2000}
       onClose={() => {setErrorOpen(false);}}

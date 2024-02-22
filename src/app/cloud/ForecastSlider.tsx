@@ -7,14 +7,6 @@ import {SunTime, findSunriseSunsetTimes} from '@/astronomy/sun';
 import {LatLngType} from '@/geo/latlng';
 import {deepOrange, yellow} from '@mui/material/colors';
 
-export interface ForecastSliderProps {
-  modelDate: Date;
-  value: number;
-  pinLocation?: LatLngType;
-  onChangeCommitted: (value: number) => void;
-}
-
-
 interface SunsetSunriseLabelProps {
   position: number;
   children: React.ReactNode;
@@ -37,7 +29,15 @@ function SunsetSunriseLabel({position, children, onClick}: SunsetSunriseLabelPro
   );
 }
 
-export function ForecastSlider({modelDate, value, pinLocation, onChangeCommitted}: ForecastSliderProps) {
+export interface ForecastSliderProps {
+  modelDate: Date;
+  value: number;
+  pinLocation?: LatLngType;
+  onChange?: (value: number) => void;
+  onChangeCommitted: (value: number) => void;
+}
+
+export function ForecastSlider({modelDate, value, pinLocation, onChange, onChangeCommitted}: ForecastSliderProps) {
   const [sliderValue, setSliderValue] = useState<number>(0);
   const [sunTimes, setSunTimes] = useState<SunTime[]>([]);
 
@@ -107,6 +107,9 @@ export function ForecastSlider({modelDate, value, pinLocation, onChangeCommitted
         max={totalHours * 60}
         onChange={(_e, v) => {
           setSliderValue(v as number);
+          if (onChange) {
+            onChange(v as number);
+          }
         }}
         onChangeCommitted={(_e, v) => {
           onChangeCommitted(v as number);

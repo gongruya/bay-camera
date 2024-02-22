@@ -5,7 +5,9 @@ import {LatLngExpression} from 'leaflet';
 import {LeafletMap} from 'reaflet-map';
 import {LeafletPopup} from 'reaflet-map/ui';
 import {LeafletTileLayer} from 'reaflet-map/raster';
+import {LeafletLine} from 'reaflet-map/vector';
 import {LeafletHeatmapLayer} from '@/leaflet/LeafletHeatmapLayer';
+import {deepOrange} from '@mui/material/colors';
 
 export interface LeafletMapContainerProps {
   style: CSSProperties;
@@ -16,20 +18,20 @@ export interface LeafletMapContainerProps {
   onValueAvailable: (value: number) => void;
   pinLocation?: LatLngExpression;
   popup?: React.ReactNode;
+  sunAzimuth?: number;
 }
 
 export default function LeafletMapContainer(props: LeafletMapContainerProps) {
+  const {pinLocation, sunAzimuth} = props;
   return (
-    <LeafletMap center={props.center}
+    <LeafletMap center={props.center} zoom={8}
       options={{
         zoomSnap: 1,
         zoomDelta: 1,
         maxBounds: [[18, -135], [55, -60]],
-        zoom: 8,
         minZoom: 5,
         maxZoom: 10,
       }}
-      zoom={8}
       style={props.style}
       onMoveEnd={(_e, map) => props.onMove(map.getBounds())}
       onClick={({latlng}) => props.onClick(latlng)}
@@ -41,9 +43,19 @@ export default function LeafletMapContainer(props: LeafletMapContainerProps) {
         }} />
       <LeafletHeatmapLayer data={props.cloudMap} maxValue={100}
         onValueAvailable={props.onValueAvailable} />
-      <LeafletPopup options={{autoPan: false}} latlng={props.pinLocation}>
+      <LeafletPopup options={{autoPan: false}} latlng={pinLocation}>
         {props.popup}
       </LeafletPopup>
+      {pinLocation &&
+        <>
+          {Number.isFinite(sunAzimuth) &&
+            <LeafletLine origin={pinLocation}
+              length={1000000}
+              azimuth={sunAzimuth!}
+              options={{color: deepOrange[400]}} />
+          }
+        </>
+      }
     </LeafletMap>
   );
 };
