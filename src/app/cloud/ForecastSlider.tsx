@@ -68,6 +68,9 @@ export function ForecastSlider({modelDate, value, pinLocation, onChange, onChang
               <SunsetSunriseLabel position={sunriseMinute / (totalHours * 60)}
                 key={sunriseMinute} onClick={() => {
                   setSliderValue(sunriseMinute);
+                  if (onChange) {
+                    onChange(sunriseMinute);
+                  }
                   onChangeCommitted(sunriseMinute);
                 }}>
                 ☼↑
@@ -82,6 +85,9 @@ export function ForecastSlider({modelDate, value, pinLocation, onChange, onChang
               <SunsetSunriseLabel position={sunsetMinute / (totalHours * 60)}
                 key={sunsetMinute} onClick={() => {
                   setSliderValue(sunsetMinute);
+                  if (onChange) {
+                    onChange(sunsetMinute);
+                  }
                   onChangeCommitted(sunsetMinute);
                 }}>
                 ☼↓
