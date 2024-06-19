@@ -46,16 +46,6 @@ export default function LeafletMapContainer(props: LeafletMapContainerProps) {
       <LeafletPopup options={{autoPan: false}} latlng={pinLocation}>
         {props.popup}
       </LeafletPopup>
-      {pinLocation &&
-        <>
-          {Number.isFinite(sunAzimuth) &&
-            <LeafletLine origin={pinLocation}
-              length={1000000}
-              azimuth={sunAzimuth!}
-              options={{color: deepOrange[400]}} />
-          }
-        </>
-      }
     </LeafletMap>
   );
 };
