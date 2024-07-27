@@ -1,21 +1,17 @@
 import React from 'react';
 import {CloudLevel, hrrrRange} from '@/weather/hrrr';
 import {Box, Typography, Table, TableHead, TableRow, TableCell, TableBody, Link} from '@mui/material';
-import moment from 'moment';
 import {findSunriseSunsetTimes} from '@/astronomy/sun';
 import {LatLngType} from '@/geo/latlng';
+import {addHours, format, isValid} from 'date-fns';
 
 const EM_DASH = '—';
 
-function formatDate(date?: Date, format?: string, invalidPlaceholder: string = EM_DASH): string {
-  if (!date) {
+function formatDate(formatString: string, date?: Date, invalidPlaceholder: string = EM_DASH): string {
+  if (!date || !isValid(date)) {
     return invalidPlaceholder;
   }
-  const m = moment(date);
-  if (!m.isValid()) {
-    return invalidPlaceholder;
-  }
-  return m.format(format);
+  return format(date, formatString);
 }
 
 export interface MapPopupCardClickData {
@@ -36,8 +32,7 @@ export function MapPopupCard({cloudLevel, cloudAmount, latlng, modelDate, onClic
   }
 
   const times = findSunriseSunsetTimes(
-    modelDate,
-    moment(modelDate).add(hrrrRange(modelDate), 'hour').toDate(), latlng);
+    modelDate, addHours(modelDate, hrrrRange(modelDate)), latlng);
   if (times.length == 0) {
     times.push([]);
   }
@@ -65,9 +60,9 @@ export function MapPopupCard({cloudLevel, cloudAmount, latlng, modelDate, onClic
                     onClick && onClick({date: sunrise});
                     e.preventDefault();
                   }}>
-                    {formatDate(sunrise, 'MMM D, h:mm a')}
+                    {formatDate('MMM d, h:mm aaa', sunrise)}
                   </Link> :
-                  formatDate(sunrise, 'MMM D, h:mm a')
+                  formatDate('MMM d, h:mm aaa', sunrise)
                 }
               </TableCell>
               <TableCell align='center'>
@@ -76,9 +71,9 @@ export function MapPopupCard({cloudLevel, cloudAmount, latlng, modelDate, onClic
                     onClick && onClick({date: sunset});
                     e.preventDefault();
                   }}>
-                    {formatDate(sunset, 'MMM D, h:mm a')}
+                    {formatDate('MMM d, h:mm aaa', sunset)}
                   </Link> :
-                  formatDate(sunset, 'MMM D, h:mm a')
+                  formatDate('MMM d, h:mm aaa', sunset)
                 }
               </TableCell>
             </TableRow>
@@ -86,7 +81,7 @@ export function MapPopupCard({cloudLevel, cloudAmount, latlng, modelDate, onClic
         </TableBody>
       </Table>
       <Typography variant='caption' component='div' textAlign='center' mt={2}>
-        HRRR@ {moment(modelDate).format('lll Z')}
+        HRRR@ {formatDate('Pp O', modelDate)}
       </Typography>
     </Box >
   );

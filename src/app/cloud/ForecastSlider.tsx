@@ -1,11 +1,11 @@
 import {hrrrRange} from '@/weather/hrrr';
 import {Slider, Box, Paper, styled} from '@mui/material';
-import moment from 'moment';
 import React, {useEffect, useState} from 'react';
 import {Mark as SliderMark} from '@mui/base/useSlider';
 import {SunTime, findSunriseSunsetTimes} from '@/astronomy/sun';
 import {LatLngType} from '@/geo/latlng';
 import {deepOrange, yellow} from '@mui/material/colors';
+import {addHours, addMinutes, differenceInMinutes, formatDate} from 'date-fns';
 
 interface SunsetSunriseLabelProps {
   position: number;
@@ -49,7 +49,7 @@ export function ForecastSlider({modelDate, value, pinLocation, onChange, onChang
     if (pinLocation) {
       setSunTimes(findSunriseSunsetTimes(
         modelDate,
-        moment(modelDate).add(hrrrRange(modelDate), 'hour').toDate(),
+        addHours(modelDate, hrrrRange(modelDate)),
         pinLocation));
     }
   }, [pinLocation]);
@@ -63,7 +63,7 @@ export function ForecastSlider({modelDate, value, pinLocation, onChange, onChang
       <Box position='relative'>
         {sunTimes.map(([sunrise]) => {
           if (sunrise) {
-            const sunriseMinute = moment(sunrise).diff(modelDate, 'minute');
+            const sunriseMinute = differenceInMinutes(sunrise, modelDate);
             return (
               <SunsetSunriseLabel position={sunriseMinute / (totalHours * 60)}
                 key={sunriseMinute} onClick={() => {
@@ -80,7 +80,7 @@ export function ForecastSlider({modelDate, value, pinLocation, onChange, onChang
         })}
         {sunTimes.map(([_, sunset]) => {
           if (sunset) {
-            const sunsetMinute = moment(sunset).diff(modelDate, 'minute');
+            const sunsetMinute = differenceInMinutes(sunset, modelDate);
             return (
               <SunsetSunriseLabel position={sunsetMinute / (totalHours * 60)}
                 key={sunsetMinute} onClick={() => {
@@ -100,10 +100,10 @@ export function ForecastSlider({modelDate, value, pinLocation, onChange, onChang
         aria-label='Forecast time'
         value={sliderValue}
         valueLabelFormat={(minute) => {
-          const m = moment(modelDate).add(minute, 'minute');
+          const date = addMinutes(modelDate, minute);
           return <Box sx={{textAlign: 'center'}}>
-            <Box>{m.format('MMM Do')}</Box>
-            <Box>{m.format('h:mm a')}</Box>
+            <Box>{formatDate(date, 'MMM d')}</Box>
+            <Box>{formatDate(date, 'h:mm aaa')}</Box>
           </Box>;
         }}
         valueLabelDisplay='auto'

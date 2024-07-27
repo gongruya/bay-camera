@@ -2,7 +2,6 @@
 
 import {MapPopupCard} from './MapPopupCard';
 import {ForecastSlider} from './ForecastSlider';
-import moment from 'moment';
 import {CloudCoverage, CloudLevel, fetchHrrrCloud, hrrrRange} from '@/weather/hrrr';
 import {Box, Button, CircularProgress, Drawer, FormControl, IconButton, InputLabel, MenuItem, Paper, Select, Snackbar, Typography, styled, useTheme} from '@mui/material';
 import {useEffect, useState} from 'react';
@@ -17,6 +16,7 @@ import {LatLngBoundsType, LatLngType} from '@/geo/latlng';
 
 import dynamic from 'next/dynamic';
 import {AltAzimuth, getSunPosition} from '@/astronomy/sun';
+import {addHours, addMinutes, differenceInMinutes, formatDate, startOfHour} from 'date-fns';
 const LeafletMapContainer =
   dynamic(() => import('@/app/cloud/LeafletMapContainer'), {ssr: false});
 
@@ -53,7 +53,7 @@ export function CloudPageWrapper() {
   const [gpsCenter, setGpsCenter] = useState<LatLngType>();
 
   useEffect(() => {
-    const date = moment().subtract(1, 'hour').startOf('hour').toDate();
+    const date = startOfHour(addHours(new Date(), -1));
     setModelDate(date);
     setCurrentDate(date);
 
@@ -86,8 +86,8 @@ export function CloudPageWrapper() {
 
   useEffect(() => {
     if (pinLocation) {
-      setSunPosition(getSunPosition(moment(modelDate)
-        .add(sliderValueMinutes, 'minute').toDate(), pinLocation));
+      setSunPosition(getSunPosition(
+        addMinutes(modelDate!, sliderValueMinutes), pinLocation));
     }
   }, [modelDate, sliderValueMinutes, pinLocation]);
 
@@ -113,7 +113,7 @@ export function CloudPageWrapper() {
       <Typography variant='h6' component='div' display='inline-block'
         sx={{ml: 0.5}} color={errorFound ? 'error' : 'inherit'}
       >
-        @ {moment(modelDate).add(forecastHours, 'hour').format('MM/DD ha')}
+        @ {formatDate(addHours(modelDate, forecastHours), 'MM/dd haaa')}
       </Typography>
     </Typography >
     <LeafletMapContainer
@@ -139,7 +139,7 @@ export function CloudPageWrapper() {
         modelDate={modelDate}
         onClick={({date}) => {
           if (date) {
-            setForecastMinutes(moment(date).diff(modelDate, 'minute'));
+            setForecastMinutes(differenceInMinutes(date, modelDate));
           }
         }}
       />}
@@ -200,11 +200,11 @@ export function CloudPageWrapper() {
                 setModelDate(new Date(value));
               }}>
               {[...(new Array(24)).keys()]
-                .map((h) => moment(currentDate).subtract(h, 'hour'))
-                .map((m, i) =>
-                  <MenuItem value={m.toISOString()} key={i}>
-                    {m.format('YYYY-MM-DD hh:mm a')} ({
-                      hrrrRange(m.toDate())} hour forecast)
+                .map((h) => addHours(currentDate, -h))
+                .map((d, i) =>
+                  <MenuItem value={d.toISOString()} key={i}>
+                    {formatDate(d, 'yyyy-MM-dd hh:mm aaa')} ({
+                      hrrrRange(d)} hour forecast)
                   </MenuItem>
                 )}
             </Select>

@@ -1,31 +1,30 @@
 import {LatLngType} from '@/geo/latlng';
-import moment from 'moment';
+import {addDays, differenceInSeconds, isValid} from 'date-fns';
 import {getPosition, getTimes} from 'suncalc';
 
 export type SunTime = [Date?, Date?];
 
 export function findSunriseSunsetTimes(start: Date, end: Date, latlng: LatLngType): SunTime[] {
-  const inDateRange = (m: moment.Moment): boolean => {
-    return m.diff(start) >= 0 && m.diff(end) <= 0;
+  const inDateRange = (d: Date): boolean => {
+    return differenceInSeconds(d, start) >= 0 &&
+      differenceInSeconds(d, end) <= 0;
   }
 
-  const ms = moment(start).subtract(1, 'day');
-  const me = moment(end).add(2, 'day');
+  const s = addDays(start, -1);
+  const e = addDays(end, 2);
   const times: SunTime[] = [];
 
-  for (let m = ms; m.diff(me) < 0; m = m.add(1, 'day')) {
-    let {sunrise, sunset} = getTimes(m.toDate(), latlng.lat, latlng.lng);
-    const mSunrise = moment(sunrise);
-    const mSunset = moment(sunset);
-    if (!mSunrise.isValid() && !mSunset.isValid()) {
+  for (let d = s; differenceInSeconds(d, e) < 0; d = addDays(d, 1)) {
+    let {sunrise, sunset} = getTimes(d, latlng.lat, latlng.lng);
+    if (!isValid(sunrise) && !isValid(sunset)) {
       continue;
     }
-    if (mSunset.diff(start) < 0 || mSunrise.diff(end) > 0) {
+    if (differenceInSeconds(sunset, start) < 0 || differenceInSeconds(sunrise, end) > 0) {
       continue;
     }
     times.push([
-      inDateRange(mSunrise) ? mSunrise.toDate() : undefined,
-      inDateRange(mSunset) ? mSunset.toDate() : undefined,
+      inDateRange(sunrise) ? sunrise : undefined,
+      inDateRange(sunset) ? sunset : undefined,
     ]);
   }
   return times;
