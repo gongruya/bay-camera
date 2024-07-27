@@ -107,7 +107,7 @@ export function ForecastSlider({modelDate, value, pinLocation, onChange, onChang
           </Box>;
         }}
         valueLabelDisplay='auto'
-        step={1}
+        step={60}
         marks={marks}
         min={0}
         max={totalHours * 60}
