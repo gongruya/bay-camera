@@ -1,7 +1,6 @@
 import {hrrrRange} from '@/weather/hrrr';
 import {Slider, Box, Paper, styled} from '@mui/material';
 import React, {useEffect, useState} from 'react';
-import {Mark as SliderMark} from '@mui/base/useSlider';
 import {SunTime, findSunriseSunsetTimes} from '@/astronomy/sun';
 import {LatLngType} from '@/geo/latlng';
 import {deepOrange, yellow} from '@mui/material/colors';
@@ -42,7 +41,7 @@ export function ForecastSlider({modelDate, value, pinLocation, onChange, onChang
   const [sunTimes, setSunTimes] = useState<SunTime[]>([]);
 
   const totalHours = hrrrRange(modelDate);
-  const marks: SliderMark[] =
+  const marks =
     new Array(totalHours + 1).fill(undefined).map((_v, h) => ({value: h * 60}));
 
   useEffect(() => {
